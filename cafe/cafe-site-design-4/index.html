@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Кофеман | Минималистичная кофейня</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-primary);
+            line-height: 1.5;
+            scroll-behavior: smooth;
+        }
+
+        /* ГЛОБАЛЬНЫЕ СТИЛИ — строгость + серые оттенки */
+        :root {
+            --bg-body: #eceef2;
+            --bg-surface: #ffffff;
+            --bg-header: #f4f6f9e6;
+            --bg-footer: #e2e5eb;
+            --text-primary: #1c1f24;
+            --text-secondary: #40464f;
+            --text-muted: #626c78;
+            --border-strict: #cbd0d6;
+            --accent-gray: #5b6673;
+            --mint-base: #4fd1c5;
+            --mint-hover: #38b2ac;
+            --mint-glow: 0 0 6px #4fd1c5;
+        }
+
+        /* ТЁМНАЯ ТЕМА — строгая, но серо-черная */
+        body.dark {
+            --bg-body: #12161c;
+            --bg-header: #181e24cc;
+            --bg-footer: #0c0f14;
+            --text-primary: #eef2f8;
+            --text-secondary: #b7bfc9;
+            --text-muted: #8691a0;
+            --border-strict: #2d343e;
+            --accent-gray: #8d99ae;
+            --mint-base: #5dd9c9;
+            --mint-hover: #49bfb0;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 28px;
+        }
+
+        /* ХЕДЕР — только название, без линий и подписей */
+        header {
+            position: sticky;
+            top: 0;
+            background: var(--bg-header);
+            backdrop-filter: blur(14px);
+            border-bottom: 1px solid var(--border-strict);
+            z-index: 100;
+            padding: 18px 0;
+        }
+
+        .header-flex {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .logo h1 {
+            font-size: 2rem;
+            font-weight: 650;
+            letter-spacing: -0.5px;
+            color: var(--text-primary);
+            /* убираем линию и подпись */
+        }
+
+        /* КНОПКА СМЕНЫ ТЕМЫ — круглая, только иконка */
+        .theme-toggle {
+            background: var(--bg-surface);
+            border: 1.5px solid var(--border-strict);
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            transition: all 0.2s;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+        }
+        .theme-toggle:hover {
+            background: var(--accent-gray);
+            color: white;
+            border-color: var(--accent-gray);
+            transform: rotate(8deg);
+        }
+
+        /* КНОПКА БРОНИРОВАНИЯ (мятная, светящаяся) */
+        .book-now-btn {
+            background: var(--mint-base);
+            border: none;
+            padding: 10px 26px;
+            border-radius: 0px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            letter-spacing: 0.3px;
+            color: #0f2b27;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            box-shadow: 0 0 5px var(--mint-base), 0 1px 2px rgba(0,0,0,0.05);
+            transition: all 0.2s;
+            font-family: 'Inter', monospace;
+        }
+        .book-now-btn:hover {
+            background: var(--mint-hover);
+            box-shadow: 0 0 12px var(--mint-base);
+            transform: translateY(-1px);
+        }
+
+        /* СЕКЦИЯ СЛОГАНА (оформлен в цветах кнопки бронирования) */
+        .slogan-section {
+            padding: 60px 0 40px;
+            border-bottom: 1px solid var(--border-strict);
+            background: transparent;
+        }
+        .slogan-card {
+            background: transparent;
+            padding: 16px 24px;
+            max-width: 780px;
+            margin: 0 auto;
+            box-shadow: none;
+        }
+        .slogan-card p {
+            font-size: 1.25rem;
+            font-weight: 450;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+        .slogan-accent {
+            color: var(--mint-base);
+            font-weight: 600;
+            text-shadow: 0 0 2px rgba(79, 209, 197, 0.3);
+        }
+        .slogan-small {
+            margin-top: 16px;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            letter-spacing: 0.2px;
+        }
+
+        /* Секции */
+        .section {
+            padding: 64px 0;
+            border-bottom: 1px solid var(--border-strict);
+        }
+        .section-title {
+            font-size: 1.9rem;
+            font-weight: 600;
+            margin-bottom: 48px;
+            letter-spacing: -0.3px;
+            border-left: 4px solid var(--mint-base);
+            padding-left: 20px;
+        }
+
+        /* ГРИД — карточки имеют только border, фон прозрачный */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 320px));
+            gap: 32px;
+            justify-content: center;
+        }
+
+        .card {
+            background: transparent;    /* полностью прозрачный фон */
+            border: 1.5px solid var(--border-strict);
+            border-radius: 0px;
+            box-shadow: none;
+            transition: transform 0.2s, border-color 0.2s;
+            display: flex;
+            flex-direction: column;
+        }
+        .card:hover {
+            transform: translateY(-4px);
+            border-color: var(--mint-base);
+        }
+
+        .card-img {
+            background: rgba(203, 208, 214, 0.15);
+            height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: var(--text-muted);
+            border-bottom: 1px solid var(--border-strict);
+        }
+        body.dark .card-img {
+            background: rgba(45, 52, 62, 0.4);
+        }
+        .card-content {
+            padding: 22px 20px 26px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .card-title {
+            font-size: 1.35rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+        }
+        .card-desc {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+            line-height: 1.45;
+        }
+        .card-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: auto;
+            margin-bottom: 20px;
+        }
+        .price {
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: var(--accent-gray);
+        }
+        .badge {
+            background: transparent;
+            padding: 4px 10px;
+            font-size: 0.7rem;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+            color: var(--text-muted);
+            border: 0.5px solid var(--border-strict);
+        }
+
+        /* КНОПКА ЗАКАЗАТЬ — в цветах кнопки бронирования (мятная, светящаяся) */
+        .order-btn {
+            background: var(--mint-base);
+            color: #0f2b27;
+            border: none;
+            padding: 8px 18px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 0.8rem;
+            width: fit-content;
+            transition: 0.2s;
+            border-radius: 0px;
+            font-family: 'Inter', monospace;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 0 3px var(--mint-base);
+        }
+        .order-btn:hover {
+            background: var(--mint-hover);
+            box-shadow: 0 0 8px var(--mint-base);
+            transform: translateY(-1px);
+        }
+
+        /* Контакты */
+        .contact-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 48px;
+            justify-content: space-between;
+        }
+        .contact-info {
+            flex: 1.2;
+            min-width: 240px;
+        }
+        .contact-details {
+            list-style: none;
+            margin-top: 24px;
+        }
+        .contact-details li {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 28px;
+            font-size: 1rem;
+            border-left: 2px solid var(--accent-gray);
+            padding-left: 16px;
+        }
+        .contact-details i {
+            width: 28px;
+            font-size: 1.25rem;
+            color: var(--accent-gray);
+        }
+        .contact-map {
+            flex: 1;
+            min-width: 260px;
+            background: transparent;
+            border: 1.5px solid var(--border-strict);
+            padding: 20px;
+        }
+        .map-placeholder {
+            background: rgba(203, 208, 214, 0.2);
+            height: 180px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 8px;
+            color: var(--text-muted);
+            border: 0.5px solid var(--border-strict);
+        }
+        footer {
+            background: var(--bg-footer);
+            padding: 32px 0;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            border-top: 1px solid var(--border-strict);
+        }
+
+        @media (max-width: 760px) {
+            .cards-grid {
+                grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            }
+            .slogan-card p {
+                font-size: 1rem;
+            }
+            .header-flex {
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+        }
+        @media (max-width: 560px) {
+            .header-flex {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .contact-wrapper {
+                flex-direction: column;
+            }
+            .section-title {
+                font-size: 1.6rem;
+            }
+        }
+        button {
+            background: none;
+            border: none;
+            font-family: inherit;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-flex">
+            <div class="logo">
+                <h1>КОФЕМАН</h1>
+            </div>
+            <div style="display: flex; gap: 16px; align-items: center;">
+                <!-- Кнопка бронирования (мятная) -->
+                <button class="book-now-btn" id="headerBookBtn">
+                    <i class="fas fa-calendar-check"></i> Забронировать столик
+                </button>
+                <!-- Круглая кнопка темы без текста -->
+                <button class="theme-toggle" id="themeSwitcher" aria-label="Сменить тему">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- СЛОГАН КОФЕЙНИ (в цветах кнопки бронирования) -->
+        <section class="slogan-section">
+            <div class="container">
+                <div class="slogan-card">
+                    <p>
+                        <span class="slogan-accent">Кофеман</span> — это строгая архитектура вкуса.<br>
+                        Мы обжигаем зёрна с резкостью лезвия и варим кофе без компромиссов.<br>
+                        <span class="slogan-accent">Никакой пыли.</span> Только чёрный, честный эспрессо и тишина серых оттенков.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- КАТЕГОРИЯ 1: КОФЕ И ДЕСЕРТЫ -->
+        <section class="section" id="products">
+            <div class="container">
+                <h2 class="section-title">Кофе и десерты</h2>
+                <div class="cards-grid" id="foodGrid"></div>
+            </div>
+        </section>
+
+        <!-- КАТЕГОРИЯ 2: УСЛУГИ / МАСТЕР-КЛАССЫ -->
+        <section class="section" id="services">
+            <div class="container">
+                <h2 class="section-title">Мастер-классы и услуги</h2>
+                <div class="cards-grid" id="servicesGrid"></div>
+            </div>
+        </section>
+
+        <!-- КОНТАКТЫ -->
+        <section class="section" id="contacts">
+            <div class="container">
+                <h2 class="section-title">Контакты</h2>
+                <div class="contact-wrapper">
+                    <div class="contact-info">
+                        <p style="font-weight: 500; margin-bottom: 8px;">Кофейня «Кофеман»</p>
+                        <ul class="contact-details">
+                            <li><i class="fas fa-map-marker-alt"></i> г. Москва, ул. Кофейная, 15с1</li>
+                            <li><i class="fas fa-phone-alt"></i> +7 (495) 123-45-67</li>
+                            <li><i class="far fa-clock"></i> ежедневно: 09:00 – 22:00</li>
+                            <li><i class="fas fa-envelope"></i> hello@kofeman.ru</li>
+                            <li><i class="fab fa-instagram"></i> @kofeman.coffee</li>
+                        </ul>
+                    </div>
+                    <div class="contact-map">
+                        <div class="map-placeholder">
+                            <i class="fas fa-location-dot" style="font-size: 1.8rem;"></i>
+                            <span>м. Кофейная, выход №3</span>
+                            <small>схема внутри кофейни</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>© 2025 КОФЕМАН — кофе без компромиссов. Серые оттенки, чистый лист.</p>
+        </div>
+    </footer>
+
+    <script>
+        // -------------------- ДАННЫЕ --------------------
+        // Товары (кофе, десерты)
+        const productsData = [
+            { icon: "fa-mug-hot", title: "Эспрессо-классика", desc: "Плотная крема, долгое послевкусие. 100% арабика.", price: "220 ₽", tag: "хит" },
+            { icon: "fa-mug-saucer", title: "Капучино «Бархат»", desc: "Сбалансированный вкус, нежная пенка.", price: "290 ₽", tag: "молочный" },
+            { icon: "fa-cup-straw", title: "Латте «Серафим»", desc: "Шёлковая текстура, лёгкая сладость.", price: "310 ₽", tag: "классика" },
+            { icon: "fa-whiskey-glass", title: "Раф карамельный", desc: "На сливках, солёная карамель.", price: "350 ₽", tag: "авторский" },
+            { icon: "fa-cake-candles", title: "Чизкейк Нью-Йорк", desc: "Нежный, воздушный, с кислинкой.", price: "270 ₽", tag: "десерт" },
+            { icon: "fa-bread-slice", title: "Круассан миндаль", desc: "Хрустящий, маслянистый, пралине.", price: "190 ₽", tag: "выпечка" },
+            { icon: "fa-mug-hot", title: "Пуровер дня", desc: "Моносорт, фильтр-кофе от шефа.", price: "250 ₽", tag: "сезон" }
+        ];
+
+        // Услуги, мастер-классы
+        const servicesData = [
+            { icon: "fa-mortar-board", title: "Основы эспрессо", desc: "2 занятия: настройка кофемашины, техника молоко.", price: "3900 ₽", tag: "курс" },
+            { icon: "fa-seedling", title: "Каппинг & дегустация", desc: "Знакомство с 5 сортами, разбор профилей обжарки.", price: "1200 ₽", tag: "мастер-класс" },
+            { icon: "fa-hand-sparkles", title: "Латте-арт интенсив", desc: "Рисунки на кофе: от сердечка до тюльпана.", price: "2500 ₽", tag: "практикум" },
+            { icon: "fa-mug-hot", title: "Кофе в турке (семинар)", desc: "Секреты восточного кофе, пряности.", price: "1500 ₽", tag: "обучение" }
+        ];
+
+        // Функция рендера карточек (прозрачный фон, кнопки мятные)
+        function renderCardsInto(containerId, itemsArray) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            container.innerHTML = '';
+            itemsArray.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                const iconClass = item.icon || 'fa-coffee';
+                card.innerHTML = `
+                    <div class="card-img">
+                        <i class="fas ${iconClass}" style="font-size: 2.8rem;"></i>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-title">${escapeHtml(item.title)}</div>
+                        <div class="card-desc">${escapeHtml(item.desc)}</div>
+                        <div class="card-meta">
+                            <span class="price">${escapeHtml(item.price)}</span>
+                            <span class="badge">${escapeHtml(item.tag)}</span>
+                        </div>
+                        <button class="order-btn item-order" data-name="${escapeHtml(item.title)}">
+                            <i class="fas fa-shopping-cart"></i> заказать
+                        </button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+            // Добавляем события на кнопки заказа
+            document.querySelectorAll('.item-order').forEach(btn => {
+                btn.removeEventListener('click', orderHandler);
+                btn.addEventListener('click', orderHandler);
+            });
+        }
+
+        function orderHandler(e) {
+            e.stopPropagation();
+            const btn = e.currentTarget;
+            const itemName = btn.getAttribute('data-name') || 'позицию';
+            showMintToast(itemName);
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str.replace(/[&<>]/g, function(m) {
+                if (m === '&') return '&amp;';
+                if (m === '<') return '&lt;';
+                if (m === '>') return '&gt;';
+                return m;
+            });
+        }
+
+        // Тосты в стиле мяты
+        function showMintToast(itemName) {
+            const toast = document.createElement('div');
+            toast.style.position = 'fixed';
+            toast.style.bottom = '28px';
+            toast.style.left = '50%';
+            toast.style.transform = 'translateX(-50%)';
+            toast.style.backgroundColor = 'var(--bg-surface)';
+            toast.style.color = 'var(--text-primary)';
+            toast.style.padding = '12px 28px';
+            toast.style.fontSize = '0.9rem';
+            toast.style.fontWeight = '500';
+            toast.style.boxShadow = '0 4px 12px rgba(0,0,0,0.2)';
+            toast.style.border = '1.5px solid var(--mint-base)';
+            toast.style.zIndex = '999';
+            toast.style.borderRadius = '0px';
+            toast.style.background = 'var(--bg-header)';
+            toast.style.backdropFilter = 'blur(8px)';
+            toast.innerHTML = `<i class="fas fa-check-circle" style="margin-right: 10px; color: var(--mint-base);"></i> «${itemName}» добавлен в заказ (демо)`;
+            document.body.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                setTimeout(() => toast.remove(), 250);
+            }, 2000);
+        }
+
+        // БРОНИРОВАНИЕ (кнопка в шапке)
+        const headerBook = document.getElementById('headerBookBtn');
+        if (headerBook) {
+            headerBook.addEventListener('click', () => {
+                showMintToast('бронирование столика');
+                setTimeout(() => {
+                    alert('Менеджер свяжется с вами. Или звоните: +7 (495) 123-45-67');
+                }, 280);
+            });
+        }
+
+        // ---------- ТЕМНАЯ / СВЕТЛАЯ ТЕМА (круглая кнопка без текста) ----------
+        const themeBtn = document.getElementById('themeSwitcher');
+        const themeIcon = themeBtn?.querySelector('i');
+
+        function setTheme(theme) {
+            if (theme === 'dark') {
+                document.body.classList.add('dark');
+                localStorage.setItem('kofeman-theme', 'dark');
+                if (themeIcon) themeIcon.className = 'fas fa-sun';
+            } else {
+                document.body.classList.remove('dark');
+                localStorage.setItem('kofeman-theme', 'light');
+                if (themeIcon) themeIcon.className = 'fas fa-moon';
+            }
+        }
+
+        function toggleTheme() {
+            const isDark = document.body.classList.contains('dark');
+            setTheme(isDark ? 'light' : 'dark');
+        }
+
+        const savedTheme = localStorage.getItem('kofeman-theme');
+        if (savedTheme === 'dark') setTheme('dark');
+        else if (savedTheme === 'light') setTheme('light');
+        else {
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) setTheme('dark');
+            else setTheme('light');
+        }
+        if (themeBtn) themeBtn.addEventListener('click', toggleTheme);
+
+        // Запуск рендера
+        renderCardsInto('foodGrid', productsData);
+        renderCardsInto('servicesGrid', servicesData);
+
+        // Центрирование карточек: justify-content: center уже в .cards-grid
+        // Дополнительно: чтобы единственная карточка в ряду была по центру — настройки грида с auto-fill и justify-content: center работают отлично.
+        // Так же добавим легкую анимацию появления
+        window.addEventListener('DOMContentLoaded', () => {
+            const allCards = document.querySelectorAll('.card');
+            allCards.forEach((card, idx) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(6px)';
+                setTimeout(() => {
+                    card.style.transition = 'opacity 0.25s ease, transform 0.3s ease';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, idx * 30);
+            });
+        });
+    </script>
+</body>
+</html>
