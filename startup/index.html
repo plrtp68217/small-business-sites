@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>FinEdge | Интеллектуальный финтех-продукт</title>
+    <!-- Google Fonts + Preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <!-- Font Awesome 6 (free icons) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- AOS Library (Animate on Scroll) -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #050B14;
+            color: #EFF3F8;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* Custom gradient backgrounds */
+        .bg-gradient-radial {
+            background: radial-gradient(circle at 10% 20%, rgba(0, 40, 70, 0.6), rgba(5, 11, 20, 0.95));
+        }
+
+        .glass-card {
+            background: rgba(18, 28, 40, 0.65);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(72, 187, 255, 0.2);
+            border-radius: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .glass-card:hover {
+            border-color: rgba(0, 200, 255, 0.5);
+            box-shadow: 0 20px 35px -12px rgba(0, 160, 255, 0.2);
+            transform: translateY(-5px);
+        }
+
+        /* animated shine button */
+        .btn-primary {
+            background: linear-gradient(95deg, #0077ff, #00c6ff);
+            border: none;
+            padding: 0.9rem 2rem;
+            font-weight: 600;
+            border-radius: 3rem;
+            color: white;
+            transition: 0.2s;
+            box-shadow: 0 8px 20px rgba(0, 119, 255, 0.3);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .btn-primary::after {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -60%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 70%);
+            opacity: 0;
+            transform: rotate(25deg);
+            transition: opacity 0.4s, transform 0.5s;
+            z-index: -1;
+        }
+
+        .btn-primary:hover::after {
+            opacity: 1;
+            transform: rotate(0deg) translate(10%, 10%);
+        }
+
+        .btn-primary:hover {
+            transform: scale(1.02);
+            box-shadow: 0 12px 28px rgba(0, 119, 255, 0.5);
+        }
+
+        /* micro interactions */
+        .hover-lift {
+            transition: transform 0.2s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+        }
+        .hover-lift:hover {
+            transform: translateY(-6px);
+        }
+
+        /* input styles */
+        .input-modern {
+            background: rgba(12, 22, 35, 0.8);
+            border: 1px solid #2A3A4E;
+            border-radius: 1.5rem;
+            padding: 0.9rem 1.5rem;
+            color: white;
+            transition: all 0.2s;
+            width: 100%;
+            font-size: 1rem;
+        }
+        .input-modern:focus {
+            outline: none;
+            border-color: #00a6ff;
+            box-shadow: 0 0 0 3px rgba(0, 166, 255, 0.2);
+            background: rgba(18, 32, 48, 0.9);
+        }
+
+        /* custom number counter (stats) */
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #FFF, #7BC9FF);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        /* floating particles (micro-interaction background) */
+        .particle {
+            position: fixed;
+            background: rgba(0, 180, 255, 0.3);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+            animation: floatParticle 18s infinite linear;
+        }
+
+        @keyframes floatParticle {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0.2; }
+            50% { opacity: 0.6; transform: translateY(-20px) rotate(180deg); }
+            100% { transform: translateY(0) rotate(360deg); opacity: 0.2; }
+        }
+
+        /* custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0F1722;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2c4c6e;
+            border-radius: 10px;
+        }
+
+        /* micro card hover effect with icon bounce */
+        .feature-card .icon {
+            transition: transform 0.2s ease;
+            display: inline-block;
+        }
+        .feature-card:hover .icon {
+            transform: scale(1.1) translateY(-3px);
+        }
+
+        /* success message animation */
+        .toast-success {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #0B2F2A;
+            border-left: 5px solid #00E0A0;
+            padding: 1rem 1.8rem;
+            border-radius: 1rem;
+            backdrop-filter: blur(12px);
+            z-index: 1000;
+            font-weight: 500;
+            animation: slideIn 0.3s ease forwards;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(50px);}
+            to { opacity: 1; transform: translateX(0);}
+        }
+    </style>
+</head>
+<body>
+
+<!-- Floating particles micro-interaction canvas like (pure DOM) -->
+<div id="particles-container" style="position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:0; overflow:hidden;"></div>
+
+<main style="position: relative; z-index: 2;">
+    <!-- NAVBAR -->
+    <nav class="glass-card" style="margin: 1.5rem 2rem; padding: 0.8rem 2rem; display: flex; justify-content: space-between; align-items: center; backdrop-filter: blur(16px); border-radius: 3rem;" data-aos="fade-down">
+        <div style="font-weight: 800; font-size: 1.8rem; letter-spacing: -0.02em;">
+            <span style="color: #00c3ff;">Fin</span><span style="color:white">Edge</span>
+        </div>
+        <div style="display: flex; gap: 2rem; align-items: center;">
+            <a href="#" style="color:#EFF3F8; text-decoration:none; font-weight:500;">Возможности</a>
+            <a href="#" style="color:#EFF3F8; text-decoration:none; font-weight:500;">Тарифы</a>
+            <a href="#" style="color:#EFF3F8; text-decoration:none; font-weight:500;">Отзывы</a>
+            <button class="btn-primary" style="padding: 0.5rem 1.5rem;" id="navCtaBtn">Начать</button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; padding: 3rem 5rem 4rem 5rem; gap: 2rem;" >
+        <div style="flex:1; min-width: 280px;" data-aos="fade-right" data-aos-duration="800">
+            <div style="background: rgba(0,160,255,0.15); display: inline-block; padding: 0.4rem 1rem; border-radius: 2rem; font-size: 0.8rem; font-weight: 500; margin-bottom: 1rem;">
+                <i class="fas fa-chart-line" style="margin-right: 6px;"></i> AI驱动的智能投资
+            </div>
+            <h1 style="font-size: 3.5rem; font-weight: 800; line-height: 1.2; margin-bottom: 1.2rem; background: linear-gradient(to right, #FFFFFF, #7BC9FF); -webkit-background-clip: text; background-clip: text; color: transparent;">
+                Управляй капиталом <br> с умным финтех-решением
+            </h1>
+            <p style="font-size: 1.1rem; color: #b0c7e9; margin-bottom: 2rem; max-width: 550px;">
+                Автоматизация, аналитика в реальном времени и безопасные транзакции. Присоединяйся к 10 000+ клиентов.
+            </p>
+            <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                <button class="btn-primary" id="heroBtn" style="display: flex; gap: 10px; align-items: center;"><i class="fas fa-bolt"></i> Открыть счёт</button>
+                <button style="background: transparent; border: 1px solid #3b6e9f; padding: 0.9rem 1.8rem; border-radius: 3rem; font-weight: 500; cursor: pointer; transition: 0.2s;" class="hover-lift" id="demoBtn"><i class="fas fa-play"></i> Демо-доступ</button>
+            </div>
+        </div>
+        <div style="flex:1; display: flex; justify-content: center;" data-aos="fade-left" data-aos-duration="900">
+            <div class="glass-card" style="padding: 1.8rem; max-width: 400px; text-align: center; transform: rotate(1deg);">
+                <i class="fas fa-chart-simple" style="font-size: 3rem; color: #00c3ff;"></i>
+                <div style="margin: 1rem 0;">
+                    <span class="stat-number" id="liveStat">0</span><span class="stat-number">+</span>
+                    <p style="font-weight: 500;">активных трейдеров онлайн</p>
+                    <div style="height: 4px; background: #1e2f40; border-radius: 4px; margin: 1rem 0;">
+                        <div style="width: 74%; height: 4px; background: linear-gradient(90deg, #00a6ff, #00ffc3); border-radius: 4px;"></div>
+                    </div>
+                    <p style="font-size: 0.8rem;"><i class="fas fa-chart-line"></i> Объём торгов за 24ч: <strong>$142M</strong></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features / cards with micro-interactions -->
+    <section style="padding: 4rem 5rem; text-align: center;">
+        <div data-aos="fade-up">
+            <h2 style="font-size: 2.5rem; font-weight: 700;">Инновационные возможности</h2>
+            <p style="color: #9bb5db; max-width: 600px; margin: 1rem auto 3rem;">Передовые инструменты для трейдинга и аналитики</p>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; gap: 2rem; justify-content: center;">
+            <div class="glass-card feature-card" style="flex:1; min-width: 250px; padding: 2rem; text-align: center;" data-aos="zoom-in" data-aos-delay="100">
+                <div class="icon"><i class="fas fa-robot" style="font-size: 2.8rem; color: #4bc0ff;"></i></div>
+                <h3 style="margin: 1.2rem 0 0.8rem;">AI-советник</h3>
+                <p>Прогнозирование рынка с точностью 94% на основе ML алгоритмов.</p>
+                <div style="margin-top: 1rem;"><i class="fas fa-arrow-right" style="color:#00a6ff;"></i> <span style="font-size: 0.85rem;">Узнать подробнее</span></div>
+            </div>
+            <div class="glass-card feature-card" style="flex:1; min-width: 250px; padding: 2rem; text-align: center;" data-aos="zoom-in" data-aos-delay="200">
+                <div class="icon"><i class="fas fa-shield-alt" style="font-size: 2.8rem; color: #4bc0ff;"></i></div>
+                <h3 style="margin: 1.2rem 0 0.8rem;">Защита активов</h3>
+                <p>Безопасность банковского уровня, 3FA и страховка депозитов до $100k.</p>
+                <div style="margin-top: 1rem;"><i class="fas fa-arrow-right" style="color:#00a6ff;"></i> <span style="font-size: 0.85rem;">Подробнее</span></div>
+            </div>
+            <div class="glass-card feature-card" style="flex:1; min-width: 250px; padding: 2rem; text-align: center;" data-aos="zoom-in" data-aos-delay="300">
+                <div class="icon"><i class="fas fa-chart-pie" style="font-size: 2.8rem; color: #4bc0ff;"></i></div>
+                <h3 style="margin: 1.2rem 0 0.8rem;">Аналитика real-time</h3>
+                <p>Дашборды с глубокой аналитикой и кастомизируемые отчёты.</p>
+                <div style="margin-top: 1rem;"><i class="fas fa-arrow-right" style="color:#00a6ff;"></i> <span style="font-size: 0.85rem;">Попробовать</span></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Интерактивная статистика с микро-взаимодействием (hover counter эффект) -->
+    <section style="padding: 2rem 5rem 4rem;">
+        <div style="background: linear-gradient(115deg, #0B1622, #07101c); border-radius: 3rem; padding: 3rem; text-align: center;" data-aos="flip-up">
+            <h3>Надёжность, проверенная временем</h3>
+            <div style="display: flex; flex-wrap: wrap; justify-content: space-around; gap: 2rem; margin-top: 3rem;">
+                <div>
+                    <div class="stat-number" id="counter1" data-target="128">0</div>
+                    <p>млрд ₽ оборот</p>
+                </div>
+                <div>
+                    <div class="stat-number" id="counter2" data-target="247">0</div>
+                    <p>профессиональных партнёров</p>
+                </div>
+                <div>
+                    <div class="stat-number" id="counter3" data-target="15">0</div>
+                    <p>лет на рынке</p>
+                </div>
+                <div>
+                    <div class="stat-number" id="counter4" data-target="99.8">0</div>
+                    <p>% uptime серверов</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Form Section with микровзаимодействия (focus ripple, валидация) -->
+    <section style="padding: 2rem 5rem 5rem;" id="contact">
+        <div style="display: flex; flex-wrap: wrap; gap: 3rem; align-items: center;">
+            <div style="flex:1;" data-aos="fade-right">
+                <h2 style="font-size: 2.2rem;">Готовы к сотрудничеству?</h2>
+                <p style="margin: 1.2rem 0; color:#b8d0f0;">Оставьте заявку, и наш финтех-консультант свяжется с вами в течение 15 минут. Персональная демонстрация платформы.</p>
+                <ul style="list-style: none;">
+                    <li style="margin: 12px 0;"><i class="fas fa-check-circle" style="color:#00e0a0;"></i> Индивидуальная стратегия</li>
+                    <li style="margin: 12px 0;"><i class="fas fa-check-circle" style="color:#00e0a0;"></i> Тестовый период 14 дней</li>
+                    <li style="margin: 12px 0;"><i class="fas fa-check-circle" style="color:#00e0a0;"></i> Поддержка 24/7</li>
+                </ul>
+            </div>
+            <div style="flex:1; min-width: 280px;" data-aos="fade-left">
+                <div class="glass-card" style="padding: 2rem;">
+                    <h3 style="margin-bottom: 1.5rem;">Свяжитесь с нами</h3>
+                    <form id="contactForm">
+                        <div style="margin-bottom: 1.2rem;">
+                            <input type="text" id="name" placeholder="Ваше имя" class="input-modern" required>
+                        </div>
+                        <div style="margin-bottom: 1.2rem;">
+                            <input type="email" id="email" placeholder="Email адрес" class="input-modern" required>
+                        </div>
+                        <div style="margin-bottom: 1.5rem;">
+                            <textarea id="message" rows="3" placeholder="Сообщение или вопрос..." class="input-modern" style="resize: none;"></textarea>
+                        </div>
+                        <button type="submit" class="btn-primary" style="width: 100%;" id="submitFormBtn"><i class="fas fa-paper-plane"></i> Отправить заявку</button>
+                        <p style="font-size: 0.7rem; margin-top: 1rem; text-align: center; opacity: 0.7;">Нажимая, вы соглашаетесь с политикой конфиденциальности</p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="glass-card" style="margin: 1rem 2rem 2rem; padding: 2rem; text-align: center; border-radius: 2rem;">
+        <p>© 2025 FinEdge — интеллектуальные финтех-решения. <i class="fas fa-heart" style="color: #ff5780;"></i></p>
+        <div style="margin-top: 1rem; display: flex; justify-content: center; gap: 2rem;">
+            <i class="fab fa-twitter" style="font-size: 1.3rem; cursor: pointer; transition: 0.2s;"></i>
+            <i class="fab fa-linkedin" style="font-size: 1.3rem; cursor: pointer; transition: 0.2s;"></i>
+            <i class="fab fa-telegram" style="font-size: 1.3rem; cursor: pointer; transition: 0.2s;"></i>
+        </div>
+    </footer>
+</main>
+
+<!-- AOS & JS -->
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+    // Инициализация AOS
+    AOS.init({
+        duration: 800,
+        once: true,
+        mirror: false,
+        easing: 'ease-out-quad'
+    });
+
+    // ----------------------------------------------
+    // 1. Particles (микро-фоновые взаимодействия)
+    function createParticles() {
+        const container = document.getElementById('particles-container');
+        const particleCount = 90;
+        for(let i=0; i<particleCount; i++) {
+            let particle = document.createElement('div');
+            particle.classList.add('particle');
+            let size = Math.random() * 8 + 2;
+            particle.style.width = size + 'px';
+            particle.style.height = size + 'px';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.top = Math.random() * 100 + '%';
+            particle.style.animationDuration = 12 + Math.random() * 20 + 's';
+            particle.style.animationDelay = Math.random() * 10 + 's';
+            particle.style.background = `radial-gradient(circle, rgba(0,200,255,${Math.random() * 0.5 + 0.2}), rgba(0,100,200,0.1))`;
+            container.appendChild(particle);
+        }
+    }
+    createParticles();
+
+    // 2. Анимированная статистика — кастомный счётчик (scroll triggers)
+    const counters = [
+        { element: document.getElementById('counter1'), target: 128, current: 0, suffix: '' },
+        { element: document.getElementById('counter2'), target: 247, current: 0, suffix: '' },
+        { element: document.getElementById('counter3'), target: 15, current: 0, suffix: '' },
+        { element: document.getElementById('counter4'), target: 99.8, current: 0, suffix: '%' }
+    ];
+
+    // также для liveStat (онлайн трейдеры)
+    const liveStatEl = document.getElementById('liveStat');
+    let liveTarget = 8320; // случайный счёт
+    let liveCurrent = 0;
+    
+    function animateCounter(counterObj, duration = 1700) {
+        const start = 0;
+        const end = counterObj.target;
+        const stepTime = Math.abs(Math.floor(duration / (end - start)));
+        let currentVal = start;
+        const timer = setInterval(() => {
+            if(currentVal >= end) {
+                counterObj.element.innerText = end.toFixed(1).replace(/\.0$/, '') + (counterObj.suffix || '');
+                clearInterval(timer);
+                return;
+            }
+            currentVal += Math.ceil((end - start) / 45);
+            if(currentVal > end) currentVal = end;
+            counterObj.element.innerText = Math.floor(currentVal).toString() + (counterObj.suffix || '');
+        }, 20);
+    }
+
+    function animateLiveStat() {
+        let val = 0;
+        const interval = setInterval(() => {
+            if(val >= liveTarget) {
+                liveStatEl.innerText = liveTarget.toLocaleString();
+                clearInterval(interval);
+                return;
+            }
+            val += Math.ceil(liveTarget / 70);
+            if(val > liveTarget) val = liveTarget;
+            liveStatEl.innerText = Math.floor(val).toLocaleString();
+        }, 18);
+    }
+
+    // IntersectionObserver для запуска счётчиков когда они появляются
+    const observerOptions = { threshold: 0.5, rootMargin: "0px" };
+    const statSection = document.querySelector('section:nth-of-type(3)'); // статистика
+    let countersTriggered = false;
+    const liveObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if(entry.isIntersecting && !countersTriggered) {
+                countersTriggered = true;
+                counters.forEach(c => animateCounter(c, 1600));
+                animateLiveStat();
+                liveObserver.unobserve(entry.target);
+            }
+        });
+    }, observerOptions);
+    if(statSection) liveObserver.observe(statSection);
+
+    // Также для hero stat: небольшая заглушка (стартовать при загрузке страницы), но не сразу, спустя 300мс
+    setTimeout(() => {
+        if(!countersTriggered) {
+            // если пользователь не доскроллил, всё равно можно показать hero стат, но пусть стартует через Observer? для эстетики - запустим легкую анимацию прямо сейчас для liveStat?
+            animateLiveStat();
+        }
+    }, 1000);
+
+    // 3. Форма связи с микро-валидацией и уведомлением (toast)
+    const contactForm = document.getElementById('contactForm');
+    const nameInput = document.getElementById('name');
+    const emailInput = document.getElementById('email');
+    const msgTextarea = document.getElementById('message');
+    
+    function showToast(message, isSuccess = true) {
+        const existingToast = document.querySelector('.toast-success');
+        if(existingToast) existingToast.remove();
+        const toast = document.createElement('div');
+        toast.className = 'toast-success';
+        toast.innerHTML = `<i class="fas ${isSuccess ? 'fa-check-circle' : 'fa-exclamation-triangle'}" style="margin-right: 12px;"></i> ${message}`;
+        document.body.appendChild(toast);
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            setTimeout(() => toast.remove(), 300);
+        }, 3500);
+    }
+
+    contactForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const nameVal = nameInput.value.trim();
+        const emailVal = emailInput.value.trim();
+        const msgVal = msgTextarea.value.trim();
+        if(!nameVal || !emailVal) {
+            showToast('Пожалуйста, заполните имя и email!', false);
+            // микро-тряска для полей
+            nameInput.style.transform = 'translateX(4px)';
+            emailInput.style.transform = 'translateX(4px)';
+            setTimeout(() => {
+                nameInput.style.transform = '';
+                emailInput.style.transform = '';
+            }, 200);
+            return;
+        }
+        if(!emailVal.includes('@') || !emailVal.includes('.')) {
+            showToast('Введите корректный email адрес', false);
+            emailInput.style.borderColor = '#ff5e7e';
+            setTimeout(() => emailInput.style.borderColor = '', 1500);
+            return;
+        }
+        // симуляция отправки на сервер + микро-эффект
+        const submitBtn = document.getElementById('submitFormBtn');
+        const originalText = submitBtn.innerHTML;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Отправка...';
+        submitBtn.disabled = true;
+        setTimeout(() => {
+            submitBtn.innerHTML = '<i class="fas fa-check"></i> Отправлено!';
+            showToast('Заявка успешно отправлена! Свяжемся с вами в ближайшее время.', true);
+            contactForm.reset();
+            setTimeout(() => {
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }, 2000);
+        }, 1200);
+    });
+
+    // micro ripple effect на инпутах
+    const allInputs = document.querySelectorAll('.input-modern');
+    allInputs.forEach(inp => {
+        inp.addEventListener('focus', (e) => {
+            inp.style.transform = 'scale(1.01)';
+            inp.style.transition = '0.1s';
+        });
+        inp.addEventListener('blur', () => {
+            inp.style.transform = 'scale(1)';
+        });
+    });
+
+    // кнопки навигации: плавный скролл к форме
+    const ctaBtns = [document.getElementById('navCtaBtn'), document.getElementById('heroBtn'), document.getElementById('demoBtn')];
+    ctaBtns.forEach(btn => {
+        if(btn) btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const contactSec = document.getElementById('contact');
+            if(contactSec) contactSec.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            // добавим микровзаимодействие: небольшой эффект пульсации на кнопке
+            btn.style.transform = 'scale(0.97)';
+            setTimeout(() => { btn.style.transform = ''; }, 150);
+        });
+    });
+
+    // Дополнительные hover-звукоподобные микроэффекты: изменение курсора на карточках
+    const featureCards = document.querySelectorAll('.feature-card');
+    featureCards.forEach(card => {
+        card.addEventListener('mouseenter', () => {
+            card.style.transition = 'all 0.25s cubic-bezier(0.2, 0.9, 0.6, 1.1)';
+        });
+    });
+    
+    // добавим реакцию на иконки соцсетей
+    const socialIcons = document.querySelectorAll('.fab');
+    socialIcons.forEach(icon => {
+        icon.addEventListener('click', () => {
+            showToast('Спасибо за интерес! Мы в соцсетях', true);
+        });
+    });
+
+    // Динамический счётчик онлайна имитация (live)
+    setInterval(() => {
+        if(liveCurrent < liveTarget) return;
+        // небольшое изменение онлайна, но не критично
+        let newVal = parseInt(liveStatEl.innerText.replace(/,/g,''));
+        if(!isNaN(newVal) && newVal > 0) {
+            let delta = Math.floor(Math.random() * 70) - 30;
+            let updated = newVal + delta;
+            if(updated < 7800) updated = 8100;
+            if(updated > 9600) updated = 8800;
+            liveStatEl.innerText = updated.toLocaleString();
+            liveTarget = updated;
+        }
+    }, 28000);
+</script>
+</body>
+</html>
