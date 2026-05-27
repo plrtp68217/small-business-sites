@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Pixel Roadmap: Unity Middle to Full‑stack GameDev</title>
+    <!-- Pixel-стиль: используем 'Press Start 2P' для акцентов и Courier New для основного текста -->
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            user-select: none; /* легкий пиксельный стиль, но не мешает клику по чекбоксам */
+        }
+
+        body {
+            background-color: #0D0B14;
+            font-family: 'Courier New', 'Courier', monospace;
+            margin: 0;
+            padding: 20px;
+            color: #e0e0e0;
+            image-rendering: crisp-edges;
+            image-rendering: pixelated;
+        }
+
+        /* Главный контейнер */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 12px;
+        }
+
+        /* ПИКСЕЛЬНЫЙ ХЕДЕР */
+        .pixel-header {
+            border: 4px solid #FFB347;
+            background: #1E1A2F;
+            padding: 1rem 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 8px 8px 0px 0px #2A233C;
+            text-align: center;
+        }
+
+        h1 {
+            font-family: 'Press Start 2P', monospace;
+            font-size: 1.3rem;
+            color: #FFB347;
+            margin: 0 0 12px 0;
+            letter-spacing: 1px;
+            text-shadow: 2px 2px 0 #5a3e1a;
+        }
+
+        .sub {
+            font-size: 0.75rem;
+            color: #b3a6d7;
+            border-top: 2px dashed #7B68EE;
+            display: inline-block;
+            padding-top: 8px;
+        }
+
+        /* Общий прогресс-бар */
+        .global-progress-section {
+            background: #11101c;
+            padding: 14px 20px;
+            border: 3px solid #6EFF8C;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .global-label {
+            font-family: 'Press Start 2P', monospace;
+            font-size: 0.7rem;
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            color: #FFB347;
+        }
+
+        .progress-bar-container {
+            background-color: #2A1E3C;
+            border: 3px solid #7B68EE;
+            height: 28px;
+            width: 100%;
+            image-rendering: pixelated;
+            position: relative;
+        }
+
+        .progress-fill {
+            background: repeating-linear-gradient(45deg, #6EFF8C, #6EFF8C 10px, #3fbd63 10px, #3fbd63 20px);
+            width: 0%;
+            height: 100%;
+            transition: width 0.2s steps(10);
+            box-shadow: inset 0 0 0 2px #A0FFB0;
+        }
+
+        .reset-button {
+            background: #2a1f3a;
+            border: 3px solid #FFB347;
+            font-family: 'Press Start 2P', monospace;
+            font-size: 0.7rem;
+            padding: 8px 16px;
+            color: #FFB347;
+            cursor: pointer;
+            margin-top: 16px;
+            transition: all 0.05s linear;
+            display: inline-block;
+        }
+
+        .reset-button:hover {
+            transform: translate(2px, 2px);
+            background: #3c2b54;
+            border-color: #ffce8a;
+            color: #ffe0a3;
+        }
+
+        /* Сетка карточек (модулей) */
+        .roadmap-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 28px;
+            margin-top: 10px;
+        }
+
+        /* Карточка в пиксельном RPG-стиле */
+        .module-card {
+            background: #18142A;
+            border: 3px solid #7B68EE;
+            padding: 18px 16px 20px 16px;
+            transition: transform 0.1s ease, border-color 0.1s;
+            box-shadow: 6px 6px 0px 0px #0b0820;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .module-card:hover {
+            transform: translate(-3px, -3px);
+            border-color: #FFB347;
+            box-shadow: 9px 9px 0px 0px #FFB34740;
+        }
+
+        .module-title {
+            font-family: 'Press Start 2P', monospace;
+            font-size: 0.85rem;
+            color: #6EFF8C;
+            border-left: 8px solid #FFB347;
+            padding-left: 12px;
+            margin-bottom: 10px;
+            word-break: break-word;
+        }
+
+        .module-duration {
+            background: #2C233F;
+            display: inline-block;
+            padding: 4px 12px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            color: #FFB347;
+            margin: 10px 0 12px 0;
+            letter-spacing: 0.5px;
+            border: 1px solid #7B68EE;
+        }
+
+        /* Чеклист */
+        .checklist {
+            list-style: none;
+            padding: 0;
+            margin: 12px 0 16px 0;
+        }
+
+        .checklist li {
+            margin-bottom: 12px;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: baseline;
+            gap: 10px;
+            line-height: 1.3;
+        }
+
+        .checklist input {
+            transform: scale(1.2);
+            accent-color: #6EFF8C;
+            cursor: pointer;
+            width: 18px;
+            height: 18px;
+            margin-top: 2px;
+            image-rendering: pixelated;
+        }
+
+        .checklist label {
+            cursor: pointer;
+            flex: 1;
+        }
+
+        /* Прогресс модуля */
+        .module-progress {
+            margin: 10px 0 15px;
+        }
+
+        .progress-bar-module {
+            background-color: #2A1E3C;
+            border: 2px solid #FFB347;
+            height: 14px;
+            width: 100%;
+        }
+
+        .progress-fill-module {
+            background: #6EFF8C;
+            width: 0%;
+            height: 100%;
+        }
+
+        .percent-text {
+            font-size: 0.65rem;
+            text-align: right;
+            color: #cbbff0;
+            margin-top: 4px;
+        }
+
+        /* Связи между модулями */
+        .connections {
+            margin-top: 15px;
+            border-top: 2px dotted #7B68EE;
+            padding-top: 12px;
+            font-size: 0.7rem;
+            background: #100E1C;
+            padding: 8px;
+        }
+
+        .connections span {
+            color: #FFB347;
+            font-family: monospace;
+            font-weight: bold;
+        }
+
+        .badge-link {
+            display: inline-block;
+            background: #2C233F;
+            padding: 2px 6px;
+            margin-right: 6px;
+            margin-top: 5px;
+            font-size: 0.65rem;
+            border-left: 2px solid #6EFF8C;
+        }
+
+        /* адаптивность: линии связей заменяются текстом, сетка становится колонкой */
+        @media (max-width: 760px) {
+            body {
+                padding: 12px;
+            }
+            .roadmap-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            .module-card {
+                padding: 14px;
+            }
+            .module-title {
+                font-size: 0.75rem;
+            }
+            .connections .badge-link {
+                display: inline-block;
+            }
+        }
+
+        footer {
+            margin-top: 48px;
+            text-align: center;
+            font-size: 0.6rem;
+            border-top: 2px solid #2a2340;
+            padding: 20px;
+            color: #7e6ca8;
+        }
+
+        button, .reset-button {
+            font-family: 'Press Start 2P', monospace;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="pixel-header">
+        <h1>⚔️ UNITY ROADMAP ⚔️</h1>
+        <div class="sub">MIDDLE → FULL‑STACK GAMEDEV | PIXEL PROGRESS</div>
+    </div>
+
+    <div class="global-progress-section">
+        <div class="global-label">
+            <span>📊 ОБЩИЙ ПРОГРЕСС</span>
+            <span id="globalPercentDisplay">0%</span>
+        </div>
+        <div class="progress-bar-container">
+            <div class="progress-fill" id="globalProgressFill"></div>
+        </div>
+        <div style="display: flex; justify-content: flex-end; margin-top: 14px;">
+            <button class="reset-button" id="resetAllProgressBtn">⟳ СБРОСИТЬ ВЕСЬ ПРОГРЕСС</button>
+        </div>
+    </div>
+
+    <div class="roadmap-grid" id="roadmapContainer"></div>
+    <footer>
+        🎮 Пиксельный Roadmap — отмечай навыки, отслеживай прогресс. Сохраняется в localStorage.
+    </footer>
+</div>
+
+<script>
+    // --------------------------------------------------------------
+    // 1. Данные модулей (каждый модуль содержит: id, название, время, навыки-чекбоксы, связи)
+    // --------------------------------------------------------------
+    const modulesData = [
+        {
+            id: 0,
+            title: "Модуль 1: Основы и архитектура Unity",
+            duration: "2 недели",
+            skills: [
+                "Компоненты, GameObject, жизненный цикл скриптов",
+                "Продвинутый MonoBehaviour, Coroutines, ScriptableObjects",
+                "Паттерны проектирования: State, Event Bus, Object Pool"
+            ],
+            connections: ["⚡ Связан с модулем 2 (физика/ввод)", "🔗 Модуль 5 (Addressables) базируется на архитектуре", "🧩 Нужен для модуля 8 (ECS)"]
+        },
+        {
+            id: 1,
+            title: "Модуль 2: Физика, ввод и камера",
+            duration: "2 недели",
+            skills: [
+                "Rigidbody, коллайдеры, Raycasting, LayerMask",
+                "Новая Input System",
+                "Кастомные камеры (Cinemachine, следящие камеры)"
+            ],
+            connections: ["🎮 Связан с модулем 7 (мультиплеер: сетевой ввод)", "📷 Необходим для UI (модуль 3) камера-взаимодействие", "🧲 Требуется для оптимизации (модуль 6)"]
+        },
+        {
+            id: 2,
+            title: "Модуль 3: UI и анимации",
+            duration: "2 недели",
+            skills: [
+                "Canvas, EventSystem, адаптивный UI",
+                "Animator, Animation Clips, Blend Trees",
+                "UI Toolkit (новый UI)"
+            ],
+            connections: ["🎬 Анимации тесно с модулем 4 (рендеринг)", "🔁 UI-события → нужны для модуля 5 (асинхронная загрузка)", "📱 Мобильная оптимизация (модуль 6) затрагивает UI"]
+        },
+        {
+            id: 3,
+            title: "Модуль 4: Рендеринг и визуальные эффекты",
+            duration: "3 недели",
+            skills: [
+                "Shader Graph, VFX Graph, Particle System",
+                "Lighting, постобработка, URP/HDRP основы",
+                "Sprite Atlas / Mesh Batcher"
+            ],
+            connections: ["✨ Визуальные эффекты требуют оптимизации (модуль 6)", "🎨 Связка с модулем 8 (ECS для рендера тысяч объектов)"]
+        },
+        {
+            id: 4,
+            title: "Модуль 5: Управление ассетами и Addressables",
+            duration: "1.5 недели",
+            skills: [
+                "Addressable Assets, Asset Bundles",
+                "Асинхронная загрузка, управление памятью"
+            ],
+            connections: ["📦 Ассеты связаны с оптимизацией памяти (модуль 6)", "🌐 Мультиплеер использует Addressables (модуль 7)"]
+        },
+        {
+            id: 5,
+            title: "Модуль 6: Оптимизация и профайлинг",
+            duration: "2.5 недели",
+            skills: [
+                "Profiler, Memory Profiler, Frame Debugger",
+                "Object pooling, батчинг, LOD, occlusion culling",
+                "Мобильная оптимизация (батарея, draw calls)"
+            ],
+            connections: ["⚙️ Основа для ECS и Job System (модуль 8)", "🧪 CI/CD тесты производительности (модуль 9)"]
+        },
+        {
+            id: 6,
+            title: "Модуль 7: Мультиплеер и сеть",
+            duration: "3 недели",
+            skills: [
+                "Netcode for GameObjects / Mirror",
+                "RPCs, NetworkVariables, хост/клиент",
+                "Photon vs асинхронная синхронизация"
+            ],
+            connections: ["🕹️ Зависит от физики и ввода (модуль 2)", "📡 Адресабельные ресурсы для контента (модуль 5)"]
+        },
+        {
+            id: 7,
+            title: "Модуль 8: ECS и Job System",
+            duration: "3.5 недели",
+            skills: [
+                "Entities, Components, Systems (ECS)",
+                "Burst Compiler, параллельные джобы"
+            ],
+            connections: ["🧠 Требует знаний оптимизации (модуль 6)", "💥 Использует архитектурные паттерны (модуль 1)"]
+        },
+        {
+            id: 8,
+            title: "Модуль 9: CI/CD и инструменты разработчика",
+            duration: "1.5 недели",
+            skills: [
+                "GitHub Actions / GitLab CI для билдов",
+                "Автоматизация тестов (Test Framework)",
+                "Профилирование билдов под Android/iOS"
+            ],
+            connections: ["🚀 Связан с оптимизацией билдов (модуль 6)", "🔁 Пайплайн автоматизации для мультиплеерных сборок (модуль7)"]
+        }
+    ];
+
+    // Глобальные переменные состояний (храним массив completed навыков, но каждый чекбокс будем отслеживать)
+    // Будем хранить состояние всех чекбоксов в localStorage по ключу "unityRoadmapChecks"
+    // Структура: объект { "moduleIdx_skillIdx": boolean }
+
+    let checkStates = {};
+
+    // Загрузка сохраненных состояний
+    function loadCheckStates() {
+        const saved = localStorage.getItem("unityRoadmapChecks");
+        if (saved) {
+            try {
+                checkStates = JSON.parse(saved);
+            } catch(e) { console.warn(e); checkStates = {}; }
+        } else {
+            checkStates = {};
+        }
+    }
+
+    // Сохранить одно состояние
+    function saveCheckState(key, value) {
+        checkStates[key] = value;
+        localStorage.setItem("unityRoadmapChecks", JSON.stringify(checkStates));
+    }
+
+    // Функция для получения общего количества чекбоксов и выполненных
+    function getGlobalStats() {
+        let total = 0;
+        let completed = 0;
+        for (let mIdx = 0; mIdx < modulesData.length; mIdx++) {
+            const skillCount = modulesData[mIdx].skills.length;
+            for (let sIdx = 0; sIdx < skillCount; sIdx++) {
+                total++;
+                const key = `${mIdx}_${sIdx}`;
+                if (checkStates[key] === true) completed++;
+            }
+        }
+        return { total, completed };
+    }
+
+    // Обновить глобальный прогресс-бар и проценты
+    function updateGlobalProgress() {
+        const { total, completed } = getGlobalStats();
+        const percent = total === 0 ? 0 : Math.floor((completed / total) * 100);
+        const fillEl = document.getElementById("globalProgressFill");
+        const percentSpan = document.getElementById("globalPercentDisplay");
+        if (fillEl) fillEl.style.width = `${percent}%`;
+        if (percentSpan) percentSpan.innerText = `${percent}%`;
+        return percent;
+    }
+
+    // Обновить прогресс конкретного модуля (пересчитывает процент и заполняет бар)
+    function updateModuleProgress(moduleId) {
+        const skills = modulesData[moduleId].skills;
+        let moduleCompleted = 0;
+        for (let i = 0; i < skills.length; i++) {
+            const key = `${moduleId}_${i}`;
+            if (checkStates[key] === true) moduleCompleted++;
+        }
+        const percent = skills.length === 0 ? 0 : Math.floor((moduleCompleted / skills.length) * 100);
+        const fillDiv = document.getElementById(`module-fill-${moduleId}`);
+        const percentText = document.getElementById(`module-percent-${moduleId}`);
+        if (fillDiv) fillDiv.style.width = `${percent}%`;
+        if (percentText) percentText.innerText = `${percent}%`;
+        return percent;
+    }
+
+    // Рендер всех модулей заново (или можно обновлять только чекбоксы, но строим динамически)
+    function renderRoadmap() {
+        const container = document.getElementById("roadmapContainer");
+        if (!container) return;
+        container.innerHTML = '';
+        for (let modIdx = 0; modIdx < modulesData.length; modIdx++) {
+            const mod = modulesData[modIdx];
+            const card = document.createElement("div");
+            card.className = "module-card";
+
+            // Заголовок + время
+            const titleDiv = document.createElement("div");
+            titleDiv.className = "module-title";
+            titleDiv.innerText = mod.title;
+            const durationSpan = document.createElement("div");
+            durationSpan.className = "module-duration";
+            durationSpan.innerText = `⏱️ ${mod.duration}`;
+
+            // Чеклист
+            const checklistUl = document.createElement("ul");
+            checklistUl.className = "checklist";
+            const checkItems = [];
+            for (let sIdx = 0; sIdx < mod.skills.length; sIdx++) {
+                const skillText = mod.skills[sIdx];
+                const li = document.createElement("li");
+                const chk = document.createElement("input");
+                chk.type = "checkbox";
+                chk.id = `chk_${modIdx}_${sIdx}`;
+                const key = `${modIdx}_${sIdx}`;
+                chk.checked = checkStates[key] === true;
+                // обработчик изменения
+                chk.addEventListener("change", (function(mId, skillIndex, checkKey) {
+                    return function(e) {
+                        const isChecked = e.target.checked;
+                        saveCheckState(checkKey, isChecked);
+                        // обновляем прогресс модуля
+                        updateModuleProgress(mId);
+                        // обновляем глобальный прогресс
+                        updateGlobalProgress();
+                    };
+                })(modIdx, sIdx, key));
+                
+                const label = document.createElement("label");
+                label.htmlFor = `chk_${modIdx}_${sIdx}`;
+                label.innerText = skillText;
+                li.appendChild(chk);
+                li.appendChild(label);
+                checklistUl.appendChild(li);
+                checkItems.push(chk);
+            }
+
+            // Прогресс модуля
+            const moduleProgressDiv = document.createElement("div");
+            moduleProgressDiv.className = "module-progress";
+            const progressWrap = document.createElement("div");
+            progressWrap.className = "progress-bar-module";
+            const fillSpan = document.createElement("div");
+            fillSpan.className = "progress-fill-module";
+            fillSpan.id = `module-fill-${modIdx}`;
+            progressWrap.appendChild(fillSpan);
+            const percentSpanMod = document.createElement("div");
+            percentSpanMod.className = "percent-text";
+            percentSpanMod.id = `module-percent-${modIdx}`;
+            moduleProgressDiv.appendChild(progressWrap);
+            moduleProgressDiv.appendChild(percentSpanMod);
+
+            // Блок связей
+            const connectionsDiv = document.createElement("div");
+            connectionsDiv.className = "connections";
+            const linkTitle = document.createElement("span");
+            linkTitle.innerHTML = "🔗 СВЯЗИ → ";
+            connectionsDiv.appendChild(linkTitle);
+            mod.connections.forEach(connText => {
+                const badge = document.createElement("div");
+                badge.className = "badge-link";
+                badge.innerText = connText;
+                connectionsDiv.appendChild(badge);
+            });
+
+            card.appendChild(titleDiv);
+            card.appendChild(durationSpan);
+            card.appendChild(checklistUl);
+            card.appendChild(moduleProgressDiv);
+            card.appendChild(connectionsDiv);
+            container.appendChild(card);
+            
+            // инициализируем отображение прогресса модуля
+            updateModuleProgress(modIdx);
+        }
+    }
+
+    // Сброс всего прогресса (все чекбоксы в false)
+    function resetAllProgress() {
+        for (let mIdx = 0; mIdx < modulesData.length; mIdx++) {
+            const skillLen = modulesData[mIdx].skills.length;
+            for (let s = 0; s < skillLen; s++) {
+                const key = `${mIdx}_${s}`;
+                checkStates[key] = false;
+            }
+        }
+        localStorage.setItem("unityRoadmapChecks", JSON.stringify(checkStates));
+        // перерисовываем, чтобы обновить состояние чекбоксов UI
+        renderRoadmap(); 
+        updateGlobalProgress();
+        // дополнительно обновим прогрессы всех модулей (в render уже вызван updateModuleProgress для каждого)
+        // но после перерисовки их ID заново созданы, и updateModuleProgress в рендере был вызван.
+        // Однако глобальный обновлен
+    }
+
+    // Инициализация и синхронизация с DOM
+    function init() {
+        loadCheckStates();
+        renderRoadmap();
+        updateGlobalProgress();
+
+        const resetBtn = document.getElementById("resetAllProgressBtn");
+        if (resetBtn) {
+            // удаляем старые обработчики, чтобы избежать дублей
+            resetBtn.replaceWith(resetBtn.cloneNode(true));
+            const newBtn = document.getElementById("resetAllProgressBtn");
+            if (newBtn) {
+                newBtn.addEventListener("click", () => {
+                    resetAllProgress();
+                });
+            }
+        }
+    }
+
+    // при загрузке страницы запускаем
+    window.addEventListener("DOMContentLoaded", init);
+</script>
+</body>
+</html>
