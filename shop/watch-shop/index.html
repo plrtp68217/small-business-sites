@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, maximum-scale=1.5">
+  <title>WATCH.STORE | Элитные часы</title>
+  <style>
+        * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* Монохромная серая гамма с оранжевым акцентом */
+    :root {
+      --bg-page: #121212;
+      --card-bg: #1e1e1e;
+      --glass-bg: rgba(18, 18, 18, 0.92);
+      --text-primary: #f5f5f5;
+      --text-muted: #a0a0a0;
+      --accent-primary: #f6511d;
+      --accent-secondary: #ff7b47;
+      --border-dim: #2e2e2e;
+      --hover-glow: rgba(246, 81, 29, 0.25);
+    }
+
+    body {
+      font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: #121212;
+      color: var(--text-primary);
+      line-height: 1.5;
+      scroll-behavior: smooth;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 32px;
+    }
+
+    /* Шапка */
+    header {
+      background: rgba(18, 18, 18, 0.94);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid #2e2e2e;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 32px;
+      flex-wrap: wrap;
+      gap: 20px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .logo-group {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-shrink: 0;
+    }
+
+    .logo {
+      font-family: 'Inter', monospace;
+      font-size: 1.9rem;
+      font-weight: 800;
+      letter-spacing: 1px;
+    }
+    .logo .watch {
+      color: var(--text-primary);
+    }
+    .logo .dotstore {
+      color: #f6511d;
+    }
+
+    /* Мини-часы - только аналоговая часть */
+    .mini-clock {
+      display: flex;
+      align-items: center;
+    }
+    .mini-analog {
+      width: 42px;
+      height: 42px;
+      background: #2a2a2a;
+      border-radius: 50%;
+      position: relative;
+      box-shadow: inset 0 0 0 1px #444, 0 0 0 2px #333;
+    }
+    .mini-hand {
+      position: absolute;
+      bottom: 50%;
+      left: 50%;
+      transform-origin: 50% 100%;
+      border-radius: 2px;
+    }
+    .mini-hour {
+      width: 2.5px;
+      height: 10px;
+      background: var(--text-primary);
+    }
+    .mini-minute {
+      width: 1.8px;
+      height: 14px;
+      background: #cccccc;
+    }
+    .mini-second {
+      width: 1px;
+      height: 16px;
+      background: #f6511d;
+    }
+    .mini-center {
+      width: 3px;
+      height: 3px;
+      background: #f6511d;
+      border-radius: 50%;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .right-group {
+      display: flex;
+      gap: 18px;
+      align-items: center;
+    }
+
+    .lang-switch {
+      display: flex;
+      gap: 6px;
+      background: rgba(40, 40, 40, 0.8);
+      padding: 5px 12px;
+      border-radius: 40px;
+      border: 1px solid #444;
+    }
+    .lang-btn {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-weight: 600;
+      cursor: pointer;
+      padding: 5px 12px;
+      border-radius: 30px;
+      transition: 0.2s;
+      font-size: 0.8rem;
+    }
+    .lang-btn.active {
+      background: #f6511d;
+      color: #ffffff;
+    }
+
+    .cart-icon {
+      background: rgba(40, 40, 40, 0.85);
+      backdrop-filter: blur(4px);
+      padding: 8px 22px;
+      border-radius: 40px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      border: 1px solid #f6511d;
+      transition: all 500ms;
+      font-weight: 600;
+    }
+    .cart-icon:hover {
+      background: #f6511d;
+      color: #ffffff;
+      border-color: #ff7b47;
+    }
+    .cart-count {
+      background: #f6511d;
+      color: #ffffff;
+      border-radius: 30px;
+      padding: 0px 8px;
+      font-weight: bold;
+    }
+
+    /* Анимация улетающего товара */
+    .fly-to-cart {
+      position: fixed;
+      z-index: 2000;
+      width: 50px;
+      height: 50px;
+      background: #f6511d;
+      border-radius: 50%;
+      pointer-events: none;
+      transition: transform 0.5s cubic-bezier(0.2, 0.9, 0.4, 1.1), opacity 0.4s;
+      opacity: 0.85;
+      box-shadow: 0 0 20px rgba(246, 81, 29, 0.6);
+    }
+
+    /* Сайдбар корзины */
+    .cart-sidebar {
+      position: fixed;
+      top: 0;
+      right: -480px;
+      width: 440px;
+      max-width: 90vw;
+      height: 100vh;
+      background: #1a1a1a;
+      border-left: 3px solid #f6511d;
+      z-index: 1000;
+      transition: right 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      box-shadow: -10px 0 35px rgba(0,0,0,0.8);
+    }
+    .cart-sidebar.open { right: 0; }
+    .cart-header {
+      padding: 22px;
+      border-bottom: 1px solid #333;
+      display: flex;
+      justify-content: space-between;
+      font-weight: 800;
+      font-size: 1.3rem;
+      background: #222;
+    }
+    .cart-items { flex: 1; overflow-y: auto; padding: 20px; background: #1a1a1a; }
+    .cart-item {
+      background: #2a2a2a;
+      margin-bottom: 16px;
+      padding: 14px;
+      border-radius: 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border: 1px solid #3a3a3a;
+    }
+    .cart-item-remove {
+      background: none;
+      border: 1px solid #f6511d;
+      color: #f6511d;
+      padding: 6px 14px;
+      border-radius: 40px;
+      cursor: pointer;
+    }
+    .cart-footer { padding: 20px; border-top: 1px solid #333; background: #222; }
+    .cart-total { font-weight: 800; font-size: 1.2rem; margin-bottom: 16px; color: #cccccc;}
+    .checkout-btn, .clear-cart-btn {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 60px;
+      font-weight: bold;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+    .checkout-btn { background: #f6511d; color: #ffffff; }
+    .clear-cart-btn { background: #2a2a2a; color: var(--text-muted); border: 1px solid #444; }
+    .close-cart { background: none; border: none; font-size: 2rem; cursor: pointer; color: var(--text-primary); }
+    .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); backdrop-filter: blur(6px); z-index: 999; display: none; }
+    .overlay.active { display: block; }
+
+    .confirm-modal, .thanks-modal {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #1a1a1a;
+      border-radius: 40px;
+      padding: 32px;
+      max-width: 420px;
+      width: 90%;
+      z-index: 1200;
+      text-align: center;
+      border: 2px solid #f6511d;
+      display: none;
+    }
+    .confirm-modal.active, .thanks-modal.active { display: block; }
+    .confirm-buttons { display: flex; gap: 12px; justify-content: center; margin-top: 24px; }
+    .confirm-yes { background: #f6511d; border: none; padding: 8px 24px; border-radius: 40px; cursor: pointer; font-weight: bold; color:#ffffff;}
+    .confirm-no { background: #333; border: none; padding: 8px 24px; border-radius: 40px; cursor: pointer; }
+
+    .catalog { padding: 60px 0; }
+    .section-title { font-size: 2rem; font-weight: 500; margin-bottom: 32px; border-left: 5px solid #f6511d; padding-left: 24px; }
+    .watch-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 32px; }
+    .product-card {
+      background: var(--card-bg);
+      border-radius: 32px;
+      padding: 24px;
+      transition: 0.25s;
+      border: 1px solid var(--border-dim);
+    }
+    .product-card:hover { transform: translateY(-6px); border-color: #f6511d; box-shadow: 0 20px 30px -10px rgba(246, 81, 29, 0.2);}
+    .product-title { font-size: 1.5rem; font-weight: 700; margin-bottom: 8px; }
+    .product-specs { font-size: 0.85rem; color: var(--text-muted); margin: 8px 0; border-left: 3px solid #555; padding-left: 14px; }
+    .warranty { font-size: 0.75rem; background: #2a2a2a; display: inline-block; padding: 4px 14px; border-radius: 40px; margin: 8px 0; }
+    .price-row { display: flex; justify-content: space-between; margin: 12px 0; }
+    .competitor-price { text-decoration: line-through; color: #888; font-size: 0.85rem; }
+    .our-price { font-size: 1.7rem; font-weight: 800; color: #f6511d; }
+    .stats { display: flex; justify-content: space-between; background: #181818; padding: 10px 14px; border-radius: 24px; margin: 14px 0; font-size: 0.75rem; }
+    .stars { color: #F5B042; letter-spacing: 2px; }
+
+    /* Блок с плюс/минус */
+    .qty-control {
+      display: flex;
+      align-items: center;
+      background: #181818;
+      border-radius: 40px;
+      border: 1px solid var(--border-dim);
+    }
+    .qty-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-primary);
+      font-size: 1.4rem;
+      width: 40px;
+      height: 40px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+    }
+    .qty-value {
+      min-width: 36px;
+      text-align: center;
+      font-weight: 600;
+    }
+    .add-section { display: flex; gap: 12px; margin-top: 18px; align-items: center; }
+    .add-to-cart {
+      background: #f6511d;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 60px;
+      font-weight: bold;
+      cursor: pointer;
+      flex: 1;
+      transition: 0.2s;
+      color: #ffffff;
+    }
+
+    .history-section {
+      margin: 20px 0 50px;
+      border-radius: 48px;
+      padding: 50px 30px;
+    }
+    .history-grid { display: flex; flex-wrap: wrap; gap: 40px; align-items: center; justify-content: center; }
+    .history-text { flex: 2; min-width: 260px; }
+    .history-text h2 { font-size: 2rem; color: #cccccc; margin-bottom: 20px; }
+    .history-text p { font-size: 1rem; line-height: 1.5; color: #a0a0a0; margin-bottom: 18px; }
+    .history-stamp { background: rgba(246, 81, 29, 0.08); border-radius: 60px; padding: 30px; text-align: center; border: 1px dashed #f6511d; min-width: 200px; }
+    footer { background: #0a0a0a; text-align: center; padding: 32px; color: #666; margin-top: 40px; border-top: 1px solid #2e2e2e; }
+
+    /* Мобильная версия: часы скрываются */
+    @media (max-width: 780px) {
+      .container { padding: 0 20px; }
+      .header-inner { padding: 12px 20px; }
+      .logo { font-size: 1.4rem; }
+      .mini-clock { display: none; }
+      .cart-icon span:first-child { display: none; }
+      .cart-icon { padding: 8px 16px; gap: 6px; }
+      .right-group { gap: 12px; }
+      .watch-grid { grid-template-columns: 1fr; }
+      .cart-sidebar { width: 100%; right: -100%; }
+    }
+  </style>
+</head>
+<body>
+<header>
+  <div class="header-inner">
+    <div class="logo-group">
+      <div class="logo"><span class="watch">WATCH</span><span class="dotstore">.STORE</span></div>
+      <div class="mini-clock">
+        <div class="mini-analog" id="miniAnalogClock">
+          <div class="mini-hand mini-hour" id="miniHour"></div>
+          <div class="mini-hand mini-minute" id="miniMinute"></div>
+          <div class="mini-hand mini-second" id="miniSecond"></div>
+          <div class="mini-center"></div>
+        </div>
+      </div>
+    </div>
+    <div class="right-group">
+      <div class="lang-switch">
+        <button class="lang-btn active" data-lang="ru">RU</button>
+        <button class="lang-btn" data-lang="en">EN</button>
+      </div>
+      <div class="cart-icon" id="cartIcon">
+        <span id="cartLabel">КОРЗИНА</span>
+        <span class="cart-count" id="cartCount">0</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="overlay" id="cartOverlay"></div>
+<div class="cart-sidebar" id="cartSidebar">
+  <div class="cart-header"><span id="cartTitle">КОРЗИНА</span><button class="close-cart" id="closeCartBtn">&times;</button></div>
+  <div class="cart-items" id="cartItemsList"><div style="text-align:center; padding:30px;">Пусто</div></div>
+  <div class="cart-footer">
+    <div class="cart-total" id="cartTotalBlock">Итого: 0 ₽</div>
+    <button class="clear-cart-btn" id="clearCartBtn">ОЧИСТИТЬ</button>
+    <button class="checkout-btn" id="checkoutBtn">КУПИТЬ</button>
+  </div>
+</div>
+
+<div class="confirm-modal" id="confirmClearModal">
+  <h3>Очистить корзину?</h3>
+  <p>Все выбранные часы будут удалены.</p>
+  <div class="confirm-buttons">
+    <button class="confirm-yes" id="confirmYesBtn">ДА</button>
+    <button class="confirm-no" id="confirmNoBtn">ОТМЕНА</button>
+  </div>
+</div>
+
+<div class="thanks-modal" id="thanksModal">
+  <h3 id="modalTitle">БЛАГОДАРИМ ЗА ПОКУПКУ!</h3>
+  <p id="modalDetails"></p>
+  <button class="checkout-btn" id="closeModalBtn" style="margin-top:20px;">ЗАКРЫТЬ</button>
+</div>
+
+<section style="padding: 20px 0 0;"><div class="container"><p id="heroQuote" style="font-size: 1.1rem; font-style: italic; color: var(--celadon);">Время - единственная валюта, которую нельзя подделать. Выбирайте часы с характером.</p></div></section>
+
+<section class="catalog"><div class="container"><div class="section-title" id="catalogTitle">МАСТЕРСКАЯ ВРЕМЕНИ</div><div class="watch-grid" id="productGrid"></div></div></section>
+
+<section class="history-section"><div class="container"><div class="history-grid">
+  <div class="history-text">
+    <h2 id="historyTitle">История ручных часов</h2>
+    <p id="historyP1">Первые наручные часы появились в XVI веке как женский аксессуар, но настоящую революцию совершили в начале XX века для авиаторов и военных. В 1904 году бразильский пилот Альберто Сантос-Дюмон попросил друга Cartier создать часы, которые позволяли бы следить за временем, не отпуская штурвала.</p>
+    <p id="historyP2">С тех пор наручные часы прошли путь от инструмента выживания до символа статуса и инженерного искусства. Сегодня механические хронометры ценятся за душу и традицию, а каждый циферблат рассказывает свою историю. WATCH.STORE продолжает это наследие, предлагая точность и стиль.</p>
+  </div>
+  <div class="history-stamp">
+    <p style="font-weight: 700; font-size: 1.2rem;">НАСЛЕДИЕ ТОЧНОСТИ</p>
+    <p>С 1904 года - символ статуса и инженерного искусства</p>
+    <p>Первые наручные часы для пионеров авиации</p>
+    <p style="margin-top: 12px;">Время на запястье - личный хронометр жизни</p>
+  </div>
+</div></div></section>
+
+<footer><p id="footerText">WATCH.STORE - каждая секунда под контролем. Премиальные часы с историей.</p></footer>
+
+<script>
+  (function() {
+    const productsData = [
+      { id: 1, name: "Chronograph Heritage", nameEn: "Chronograph Heritage", specs: "Автомат, сапфир, 100m WR", specsEn: "Auto, sapphire, 100m WR", warranty: "5 лет гарантии", warrantyEn: "5 years warranty", competitorPrice: 18900, ourPrice: 12490, soldCount: 347, rating: 4.8, reviewsCount: 124 },
+      { id: 2, name: "Aviator GMT", nameEn: "Aviator GMT", specs: "Японский хронограф, двойной циферблат", specsEn: "Japanese chrono, dual time", warranty: "3 года + сервис", warrantyEn: "3 years + service", competitorPrice: 27500, ourPrice: 19990, soldCount: 512, rating: 4.9, reviewsCount: 287 },
+      { id: 3, name: "Diver Deep Black", nameEn: "Diver Deep Black", specs: "Керамика, 300m WR, гелиевый клапан", specsEn: "Ceramic, 300m WR, helium valve", warranty: "Международная 5 лет", warrantyEn: "International 5y", competitorPrice: 32500, ourPrice: 24990, soldCount: 198, rating: 4.7, reviewsCount: 96 },
+      { id: 4, name: "Vintage Moonphase", nameEn: "Vintage Moonphase", specs: "Лунный календарь, ручной подзавод", specsEn: "Moonphase, hand-wound", warranty: "2 года + ТО", warrantyEn: "2 years + service", competitorPrice: 42000, ourPrice: 31990, soldCount: 84, rating: 4.9, reviewsCount: 42 },
+      { id: 5, name: "Carbon Skeleton", nameEn: "Carbon Skeleton", specs: "Карбон, открытый механизм, 42h reserve", specsEn: "Carbon, open heart, 42h", warranty: "4 года расширенной", warrantyEn: "4 years extended", competitorPrice: 39800, ourPrice: 28990, soldCount: 256, rating: 4.6, reviewsCount: 173 },
+      { id: 6, name: "Classic Dresscode", nameEn: "Classic Dresscode", specs: "Тонкий 7mm, сапфир, кроко кожа", specsEn: "Thin 7mm, sapphire, croco leather", warranty: "3 года", warrantyEn: "3 years", competitorPrice: 15900, ourPrice: 9990, soldCount: 623, rating: 4.8, reviewsCount: 401 }
+    ];
+
+    let cart = [];
+    let currentLang = "ru";
+
+    const translations = {
+      ru: { cartLabel: "КОРЗИНА", cartTitle: "КОРЗИНА", checkoutBtn: "КУПИТЬ", clearCart: "ОЧИСТИТЬ", cartEmpty: "Корзина пуста", heroQuote: "Время - единственная валюта, которую нельзя подделать. Выбирайте часы с характером.", catalogTitle: "МАСТЕРСКАЯ ВРЕМЕНИ", footerText: "WATCH.STORE - каждая секунда под контролем. Премиальные часы с историей.", addToCart: "ДОБАВИТЬ", sold: "продано", reviews: "отзывов", competitor: "конкуренты", totalPrice: "Итого", historyTitle: "История ручных часов", historyP1: "Первые наручные часы появились в XVI веке как женский аксессуар, но настоящую революцию совершили в начале XX века для авиаторов и военных. В 1904 году бразильский пилот Альберто Сантос-Дюмон попросил друга Cartier создать часы, которые позволяли бы следить за временем, не отпуская штурвала.", historyP2: "С тех пор наручные часы прошли путь от инструмента выживания до символа статуса и инженерного искусства. Сегодня механические хронометры ценятся за душу и традицию, а каждый циферблат рассказывает свою историю. WATCH.STORE продолжает это наследие, предлагая точность и стиль." },
+      en: { cartLabel: "CART", cartTitle: "CART", checkoutBtn: "CHECKOUT", clearCart: "CLEAR", cartEmpty: "Cart is empty", heroQuote: "Time is the only currency you can't counterfeit. Choose watches with character.", catalogTitle: "ATELIER OF TIME", footerText: "WATCH.STORE - every second under control. Premium watches with heritage.", addToCart: "ADD", sold: "sold", reviews: "reviews", competitor: "competitors", totalPrice: "Total", historyTitle: "History of Wristwatches", historyP1: "The first wristwatches appeared in the 16th century as a female accessory, but the real revolution came in the early 20th century for aviators and military. In 1904, Brazilian pilot Alberto Santos-Dumont asked his friend Cartier to create a watch that would allow him to check time without releasing the controls.", historyP2: "Since then, wristwatches have evolved from survival tools to status symbols and engineering art. Today, mechanical chronometers are prized for their soul and tradition, each dial telling its own story. WATCH.STORE continues this legacy, offering precision and style." }
+    };
+    const t = (key) => translations[currentLang][key] || key;
+
+    function animateToCart(btnElement) {
+      const rect = btnElement.getBoundingClientRect();
+      const cartIcon = document.getElementById('cartIcon');
+      if (!cartIcon) return;
+      const cartRect = cartIcon.getBoundingClientRect();
+      const flyer = document.createElement('div');
+      flyer.className = 'fly-to-cart';
+      flyer.style.left = (rect.left + rect.width / 2 - 25) + 'px';
+      flyer.style.top = (rect.top + rect.height / 2 - 25) + 'px';
+      document.body.appendChild(flyer);
+      
+      const deltaX = cartRect.left + cartRect.width / 2 - (rect.left + rect.width / 2);
+      const deltaY = cartRect.top + cartRect.height / 2 - (rect.top + rect.height / 2);
+      
+      requestAnimationFrame(() => {
+        flyer.style.transform = `translate(${deltaX}px, ${deltaY}px) scale(0.2)`;
+        flyer.style.opacity = '0';
+      });
+      
+      setTimeout(() => {
+        flyer.remove();
+        const countSpan = document.getElementById('cartCount');
+        if (countSpan) {
+          countSpan.style.transform = 'scale(1.3)';
+          setTimeout(() => { if(countSpan) countSpan.style.transform = ''; }, 200);
+        }
+      }, 500);
+    }
+
+    function addToCart(id, qty, btnElement) {
+      if (btnElement) animateToCart(btnElement);
+      const existing = cart.find(i => i.id === id);
+      if (existing) existing.quantity += qty;
+      else cart.push({ id, quantity: qty });
+      updateCartUI();
+    }
+
+    function removeItem(id) { cart = cart.filter(i => i.id !== id); updateCartUI(); }
+    function clearCart() { cart = []; updateCartUI(); closeConfirmModal(); }
+
+    function renderProducts() {
+      const grid = document.getElementById('productGrid');
+      if (!grid) return;
+      grid.innerHTML = '';
+      productsData.forEach(prod => {
+        const name = currentLang === 'ru' ? prod.name : prod.nameEn;
+        const spec = currentLang === 'ru' ? prod.specs : prod.specsEn;
+        const warranty = currentLang === 'ru' ? prod.warranty : prod.warrantyEn;
+        const starsFull = Math.floor(prod.rating);
+        let starStr = '★'.repeat(starsFull) + '☆'.repeat(5 - starsFull);
+        const card = document.createElement('div');
+        card.className = 'product-card';
+        card.innerHTML = `
+          <div class="product-title">${name}</div>
+          <div class="product-specs">${spec}</div>
+          <div class="warranty">⚙️ ${warranty}</div>
+          <div class="price-row"><span class="competitor-price">${t('competitor')}: ${prod.competitorPrice.toLocaleString()} ₽</span><span class="our-price">${prod.ourPrice.toLocaleString()} ₽</span></div>
+          <div class="stats"><span>📦 ${t('sold')}: ${prod.soldCount}</span><div class="stars">${starStr} ${prod.rating} (${prod.reviewsCount} ${t('reviews')})</div></div>
+          <div class="add-section">
+            <div class="qty-control" data-id="${prod.id}">
+              <button class="qty-btn qty-minus">−</button>
+              <span class="qty-value">1</span>
+              <button class="qty-btn qty-plus">+</button>
+            </div>
+            <button class="add-to-cart" data-id="${prod.id}">${t('addToCart')}</button>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+
+      document.querySelectorAll('.qty-control').forEach(control => {
+        const minusBtn = control.querySelector('.qty-minus');
+        const plusBtn = control.querySelector('.qty-plus');
+        const valueSpan = control.querySelector('.qty-value');
+        let currentQty = 1;
+
+        const updateDisplay = () => { valueSpan.textContent = currentQty; control.setAttribute('data-current-qty', currentQty); };
+        minusBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          if (currentQty > 1) { currentQty--; updateDisplay(); }
+        });
+        plusBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          if (currentQty < 99) { currentQty++; updateDisplay(); }
+        });
+        control.setAttribute('data-current-qty', currentQty);
+      });
+
+      document.querySelectorAll('.add-to-cart').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const id = parseInt(btn.dataset.id, 10);
+          const qtyControl = btn.parentElement.querySelector('.qty-control');
+          const qty = parseInt(qtyControl.getAttribute('data-current-qty') || '1', 10);
+          addToCart(id, qty, btn);
+        });
+      });
+    }
+
+    function updateCartUI() {
+      const totalItems = cart.reduce((s,i) => s + i.quantity, 0);
+      document.getElementById('cartCount').innerText = totalItems;
+      const container = document.getElementById('cartItemsList');
+      const totalDiv = document.getElementById('cartTotalBlock');
+      if (!container) return;
+      if (cart.length === 0) {
+        container.innerHTML = `<div style="text-align:center;padding:30px;">${t('cartEmpty')}</div>`;
+        totalDiv.innerText = `${t('totalPrice')}: 0 ₽`;
+        return;
+      }
+      let totalSum = 0, html = '';
+      cart.forEach(item => {
+        const prod = productsData.find(p=>p.id === item.id);
+        if (!prod) return;
+        const sum = prod.ourPrice * item.quantity;
+        totalSum += sum;
+        const name = currentLang === 'ru' ? prod.name : prod.nameEn;
+        html += `<div class="cart-item"><div><strong>${name}</strong><br>${prod.ourPrice.toLocaleString()} ₽ x ${item.quantity} = ${sum.toLocaleString()} ₽</div><button class="cart-item-remove" data-id="${item.id}">✖</button></div>`;
+      });
+      container.innerHTML = html;
+      totalDiv.innerText = `${t('totalPrice')}: ${totalSum.toLocaleString()} ₽`;
+      document.querySelectorAll('.cart-item-remove').forEach(btn => btn.addEventListener('click', () => removeItem(parseInt(btn.dataset.id))));
+    }
+
+    function openCartSidebar() { document.getElementById('cartSidebar').classList.add('open'); document.getElementById('cartOverlay').classList.add('active'); }
+    function closeCartSidebar() { document.getElementById('cartSidebar').classList.remove('open'); document.getElementById('cartOverlay').classList.remove('active'); }
+    function showConfirmClear() { document.getElementById('confirmClearModal').classList.add('active'); }
+    function closeConfirmModal() { document.getElementById('confirmClearModal').classList.remove('active'); }
+    function showThanksModal(orderInfo) { 
+      document.getElementById('modalTitle').innerText = currentLang === 'ru' ? 'БЛАГОДАРИМ ЗА ПОКУПКУ!' : 'THANK YOU!';
+      document.getElementById('modalDetails').innerHTML = orderInfo;
+      document.getElementById('thanksModal').classList.add('active');
+      cart = []; updateCartUI(); closeCartSidebar();
+    }
+    function checkoutAction() {
+      if (cart.length === 0) return;
+      let details = '', total = 0;
+      cart.forEach(i => { const p = productsData.find(x=>x.id === i.id); if(p) { total += p.ourPrice * i.quantity; details += `${currentLang === 'ru' ? p.name : p.nameEn} x${i.quantity} = ${(p.ourPrice * i.quantity).toLocaleString()} ₽<br>`; } });
+      showThanksModal(`<strong>${currentLang === 'ru' ? 'Вы заказали' : 'You ordered'}:</strong><br>${details}<br><strong>${t('totalPrice')}: ${total.toLocaleString()} ₽</strong><br><span style="color:#52b788;">✓ Время на вашей стороне!</span>`);
+    }
+
+    function updateMiniClock() {
+      const now = new Date();
+      const sec = now.getSeconds(), min = now.getMinutes(), hrs = now.getHours() % 12;
+      const secHand = document.getElementById('miniSecond');
+      const minHand = document.getElementById('miniMinute');
+      const hourHand = document.getElementById('miniHour');
+      if (secHand) secHand.style.transform = `translateX(-50%) rotate(${sec*6}deg)`;
+      if (minHand) minHand.style.transform = `translateX(-50%) rotate(${min*6 + sec*0.1}deg)`;
+      if (hourHand) hourHand.style.transform = `translateX(-50%) rotate(${hrs*30 + min*0.5}deg)`;
+    }
+
+    function applyLanguage() {
+      document.getElementById('cartLabel').innerText = t('cartLabel');
+      document.getElementById('cartTitle').innerText = t('cartTitle');
+      document.getElementById('heroQuote').innerText = t('heroQuote');
+      document.getElementById('catalogTitle').innerText = t('catalogTitle');
+      document.getElementById('footerText').innerText = t('footerText');
+      document.getElementById('clearCartBtn').innerText = t('clearCart');
+      document.getElementById('checkoutBtn').innerText = t('checkoutBtn');
+      document.getElementById('historyTitle').innerText = t('historyTitle');
+      document.getElementById('historyP1').innerText = t('historyP1');
+      document.getElementById('historyP2').innerText = t('historyP2');
+      renderProducts();
+      updateCartUI();
+    }
+
+    function init() {
+      renderProducts();
+      updateCartUI();
+      setInterval(updateMiniClock, 1000);
+      updateMiniClock();
+      document.getElementById('cartIcon').addEventListener('click', openCartSidebar);
+      document.getElementById('closeCartBtn').addEventListener('click', closeCartSidebar);
+      document.getElementById('cartOverlay').addEventListener('click', closeCartSidebar);
+      document.getElementById('clearCartBtn').addEventListener('click', showConfirmClear);
+      document.getElementById('confirmYesBtn').addEventListener('click', clearCart);
+      document.getElementById('confirmNoBtn').addEventListener('click', closeConfirmModal);
+      document.getElementById('checkoutBtn').addEventListener('click', checkoutAction);
+      document.getElementById('closeModalBtn').addEventListener('click', () => document.getElementById('thanksModal').classList.remove('active'));
+      document.querySelectorAll('.lang-btn').forEach(btn => btn.addEventListener('click', () => { currentLang = btn.dataset.lang; document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); applyLanguage(); }));
+      applyLanguage();
+    }
+    init();
+  })();
+</script>
+</body>
+</html>
