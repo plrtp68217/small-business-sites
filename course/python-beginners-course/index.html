@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>PYTHON DEV — курс по Python с нуля до проекта</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #0b1015;
+      font-family: 'Inter', sans-serif;
+      color: #e6edf5;
+      line-height: 1.5;
+      scroll-behavior: smooth;
+    }
+
+    :root {
+      --bg-deep: #0b1015;
+      --card-bg: #11171f;
+      --border-dim: #25323e;
+      --python-blue: #4584b6;
+      --python-yellow: #ffde57;
+      --blue-light: #6ba5d0;
+      --yellow-soft: #f3cd5c;
+      --text-light: #eef4fc;
+      --text-muted: #98a9bc;
+      --success: #4584b6;
+    }
+
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    section {
+      padding: 80px 0;
+      border-bottom: 1px solid var(--border-dim);
+    }
+
+    h1 {
+      font-size: 3.2rem;
+      font-weight: 800;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      color: var(--text-light);
+      margin-bottom: 0.5rem;
+    }
+
+    .hero-sub {
+      font-size: 1.3rem;
+      color: var(--python-yellow);
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    h2 {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 2rem;
+      letter-spacing: -0.01em;
+      color: #ffffff;
+    }
+
+    h3 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: var(--blue-light);
+    }
+
+    .btn {
+      display: inline-block;
+      background-color: var(--python-blue);
+      color: #0b1015;
+      font-weight: 700;
+      padding: 14px 32px;
+      border-radius: 40px;
+      text-decoration: none;
+      transition: 0.2s ease;
+      font-size: 1rem;
+      border: none;
+      cursor: pointer;
+      text-align: center;
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 1px solid var(--python-blue);
+      color: var(--python-blue);
+    }
+
+    .btn-outline:hover {
+      background: rgba(69, 132, 182, 0.1);
+    }
+
+    .btn:hover {
+      background-color: var(--blue-light);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 20px -12px rgba(69, 132, 182, 0.4);
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 0;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      color: var(--python-blue);
+    }
+
+    .logo span {
+      color: var(--python-yellow);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 28px;
+    }
+
+    .nav-links a {
+      color: var(--text-light);
+      text-decoration: none;
+      font-weight: 500;
+      transition: 0.2s;
+    }
+
+    .nav-links a:hover {
+      color: var(--python-blue);
+    }
+
+    .hero {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 40px;
+    }
+
+    .hero-left {
+      flex: 1.2;
+    }
+
+    .hero-right {
+      flex: 0.9;
+      background: var(--card-bg);
+      border-radius: 32px;
+      padding: 32px;
+      border: 1px solid var(--border-dim);
+    }
+
+    .price-badge {
+      font-size: 2.4rem;
+      font-weight: 800;
+      color: var(--python-yellow);
+    }
+
+    .installment {
+      color: var(--text-muted);
+      margin-top: 8px;
+      font-size: 0.95rem;
+    }
+
+    .features-list {
+      margin: 24px 0;
+      list-style: none;
+    }
+
+    .features-list li {
+      margin: 12px 0;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .features-list li::before {
+      content: "✓";
+      color: var(--python-blue);
+      font-weight: bold;
+      font-size: 1.2rem;
+    }
+
+    .pains-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 28px;
+      margin-top: 20px;
+    }
+
+    .pain-card {
+      background: var(--card-bg);
+      border-radius: 24px;
+      padding: 28px;
+      flex: 1 1 220px;
+      border: 1px solid var(--border-dim);
+      transition: 0.2s;
+    }
+
+    .pain-card:hover {
+      border-color: var(--python-blue);
+      transform: translateY(-4px);
+    }
+
+    .pain-icon {
+      font-size: 2rem;
+      font-weight: 500;
+      margin-bottom: 16px;
+      color: var(--python-yellow);
+    }
+
+    .modules-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+
+    .module-row {
+      background: rgba(17, 23, 31, 0.8);
+      border-radius: 28px;
+      padding: 20px 28px;
+      border: 1px solid var(--border-dim);
+      transition: 0.2s;
+      position: relative;
+    }
+
+    .module-row:hover {
+      border-color: var(--python-blue);
+      background: #121a24;
+    }
+
+    .module-row.highlight-final {
+      background: linear-gradient(135deg, #1b2a2f, #121d24);
+      border: 2px solid var(--python-yellow);
+      box-shadow: 0 6px 14px rgba(0,0,0,0.5);
+    }
+
+    .module-row.highlight-final .module-name {
+      color: var(--python-yellow);
+      text-shadow: 0 0 2px rgba(0,0,0,0.3);
+    }
+
+    .module-row.highlight-final .skill-tag {
+      background: rgba(255, 222, 87, 0.25);
+      color: var(--python-yellow);
+      font-weight: 600;
+    }
+
+    .module-header {
+      display: flex;
+      align-items: baseline;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .module-name {
+      font-weight: 800;
+      font-size: 1.3rem;
+      color: var(--python-yellow);
+    }
+
+    .skill-tag {
+      background: rgba(69, 132, 182, 0.2);
+      padding: 6px 16px;
+      border-radius: 40px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--blue-light);
+      letter-spacing: 0.3px;
+    }
+
+    .module-desc {
+      margin: 10px 0 12px 0;
+      color: #cbdbe6;
+      font-size: 0.95rem;
+    }
+
+    .skill-arrow {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px dashed var(--border-dim);
+      font-size: 0.9rem;
+    }
+
+    .arrow-icon {
+      font-size: 1.3rem;
+      color: var(--python-blue);
+      font-weight: 600;
+    }
+
+    .skill-text {
+      color: var(--python-yellow);
+      font-weight: 500;
+    }
+
+    .reviews-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 30px;
+    }
+
+    .review-card {
+      background: var(--card-bg);
+      border-radius: 28px;
+      padding: 28px;
+      flex: 1 1 280px;
+      border: 1px solid var(--border-dim);
+    }
+
+    .review-stars {
+      color: var(--python-yellow);
+      font-weight: 600;
+      letter-spacing: 2px;
+      margin-bottom: 12px;
+    }
+
+    .review-text {
+      font-style: italic;
+      margin: 16px 0;
+      color: #cddfef;
+    }
+
+    .review-author {
+      font-weight: 700;
+      margin-top: 12px;
+      color: var(--python-blue);
+    }
+
+    .form-box {
+      background: linear-gradient(145deg, #0f1620, #0a0f16);
+      border-radius: 32px;
+      padding: 48px 40px;
+      text-align: center;
+      border: 1px solid var(--border-dim);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+      text-align: left;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 14px 18px;
+      background: #1a232f;
+      border: 1px solid var(--border-dim);
+      border-radius: 60px;
+      color: white;
+      font-size: 1rem;
+      font-family: inherit;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: var(--python-blue);
+    }
+
+    .btn-form {
+      width: 100%;
+      background: var(--python-blue);
+      font-size: 1.1rem;
+      padding: 14px;
+    }
+
+    .small-note {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 16px;
+    }
+
+    .guarantee-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 40px;
+      text-align: center;
+    }
+
+    .guarantee-item {
+      background: var(--card-bg);
+      padding: 20px 28px;
+      border-radius: 28px;
+      min-width: 160px;
+      border: 1px solid var(--border-dim);
+    }
+
+    /* Новый стиль для блока компетенций и карьерных позиций */
+    .competencies-block {
+      background: var(--card-bg);
+      border-radius: 28px;
+      padding: 32px 36px;
+      margin-top: 40px;
+      border: 1px solid var(--python-blue);
+      box-shadow: 0 8px 20px rgba(69,132,182,0.15);
+    }
+
+    .competencies-block h4 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--python-yellow);
+      margin-bottom: 20px;
+      border-left: none;
+    }
+
+    .competence-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      list-style: none;
+      margin-bottom: 28px;
+    }
+
+    .competence-list li {
+      background: rgba(69, 132, 182, 0.2);
+      padding: 8px 20px;
+      border-radius: 40px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: #d4e6ff;
+    }
+
+    .job-positions {
+      background: #0d141c;
+      border-radius: 24px;
+      padding: 20px 28px;
+      margin-top: 12px;
+    }
+
+    .job-positions p {
+      font-weight: 600;
+      margin-bottom: 12px;
+      color: var(--python-yellow);
+    }
+
+    .job-positions span {
+      display: inline-block;
+      background: #1f2a36;
+      padding: 6px 18px;
+      border-radius: 32px;
+      margin: 6px 8px 0 0;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: #c9e2ff;
+    }
+
+    footer {
+      text-align: center;
+      padding: 40px 0;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    @media (max-width: 780px) {
+      h1 { font-size: 2.3rem; }
+      section { padding: 50px 0; }
+      .hero { flex-direction: column; }
+      .nav-links { gap: 18px; flex-wrap: wrap; justify-content: center; }
+      .module-header { flex-direction: column; gap: 8px; align-items: flex-start; }
+      .competencies-block { padding: 24px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <nav>
+      <div class="logo">PYTHON <span>DEV</span></div>
+      <div class="nav-links">
+        <a href="#about">О курсе</a>
+        <a href="#program">Программа</a>
+        <a href="#reviews">Отзывы</a>
+        <a href="#bonus">Бесплатно</a>
+      </div>
+    </nav>
+  </div>
+
+  <section style="padding-top: 40px;">
+    <div class="container">
+      <div class="hero">
+        <div class="hero-left">
+          <div class="hero-sub">полный цикл разработки на Python</div>
+          <h1>Станьте разработчиком<br>с нуля до боевого проекта</h1>
+          <p style="font-size: 1.2rem; color: var(--text-muted); margin: 20px 0 24px 0;">
+            Живые вебинары, текстовая база, задания с проверкой и чат поддержки. <br>
+            Финальный проект — в портфолио. Гарантия возврата 30 дней.
+          </p>
+          <ul class="features-list">
+            <li>Живые вебинары 2 раза в неделю</li>
+            <li>Текстовые материалы + задания с ревью</li>
+            <li>Чат с кураторами и сокурсниками 24/7</li>
+            <li>Итоговый проект (Telegram-бот + парсер)</li>
+            <li>Бесплатный вводный модуль «Основы за 3 дня»</li>
+          </ul>
+        </div>
+        <div class="hero-right">
+          <div class="price-badge">10 000 рублей</div>
+          <div class="installment">или рассрочка от 0% на 3 / 6 месяцев</div>
+          <hr style="margin: 20px 0; border-color: var(--border-dim);">
+          <p style="font-weight: 600; margin-bottom: 12px;">Бесплатный модуль уже сейчас</p>
+          <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 20px;">3 урока + первые задачи, чтобы понять свой темп и стиль обучения</p>
+          <form id="freeModuleForm" action="#" method="POST">
+            <input type="text" placeholder="Ваше имя" id="name" required style="margin-bottom: 12px;">
+            <input type="email" placeholder="E-mail" id="email" required style="margin-bottom: 12px;">
+            <button type="submit" class="btn btn-form">Забрать бесплатный модуль</button>
+          </form>
+          <p class="small-note">Никакого спама. Доступ к материалам сразу на почту</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="container">
+      <h2>Почему даже новички доходят до результата</h2>
+      <div class="pains-grid">
+        <div class="pain-card">
+          <div class="pain-icon">01</div>
+          <h3>Страшно начинать с нуля</h3>
+          <p>Мы разбираем синтаксис на пальцах, без заумных слов. Первый код — на 2-м занятии.</p>
+        </div>
+        <div class="pain-card">
+          <div class="pain-icon">02</div>
+          <h3>Боюсь бросить из-за сложности</h3>
+          <p>Живые вебинары + чат 24/7. Кураторы объясняют сложные темы, пока вы не поймете.</p>
+        </div>
+        <div class="pain-card">
+          <div class="pain-icon">03</div>
+          <h3>Хочу быстро перейти к практике</h3>
+          <p>80% времени — практика. На 2-й неделе создадите парсер, на 3-й — телеграм-бота.</p>
+        </div>
+        <div class="pain-card">
+          <div class="pain-icon">04</div>
+          <h3>Нужно для работы / смены профессии</h3>
+          <p>Итоговый проект добавляете в резюме. Выпускники работают аналитиками и junior-разработчиками.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ПРОГРАММА КУРСА: вместо hard skill — время на модуль -->
+  <section id="program">
+    <div class="container">
+      <h2>Программа курса</h2>
+      <div class="modules-wrapper">
+        <div class="module-row">
+          <div class="module-header">
+            <span class="module-name">Модуль 1. Введение и среда разработки</span>
+            <span class="skill-tag">≈ 3-4 дня</span>
+          </div>
+          <div class="module-desc">Установка Python, настройка IDE, первые строки кода, работа с терминалом.</div>
+          <div class="skill-arrow">
+            <span class="arrow-icon">→</span>
+            <span class="skill-text">Навык: Уверенная работа в PyCharm / VS Code, базовые команды терминала</span>
+          </div>
+        </div>
+        <div class="module-row">
+          <div class="module-header">
+            <span class="module-name">Модуль 2. Основы синтаксиса: данные и логика</span>
+            <span class="skill-tag">≈ 5-6 дней</span>
+          </div>
+          <div class="module-desc">Переменные, типы данных, условные операторы, циклы, базовые структуры.</div>
+          <div class="skill-arrow">
+            <span class="arrow-icon">→</span>
+            <span class="skill-text">Навык: Писать чистые условия и циклы, анализировать алгоритмы</span>
+          </div>
+        </div>
+        <div class="module-row">
+          <div class="module-header">
+            <span class="module-name">Модуль 3. Коллекции и функции</span>
+            <span class="skill-tag">≈ 5 дней</span>
+          </div>
+          <div class="module-desc">Списки, словари, кортежи, функции, аргументы, область видимости.</div>
+          <div class="skill-arrow">
+            <span class="arrow-icon">→</span>
+            <span class="skill-text">Навык: Работа с данными, создание переиспользуемых функций</span>
+          </div>
+        </div>
+        <div class="module-row">
+          <div class="module-header">
+            <span class="module-name">Модуль 4. Файлы и исключения</span>
+            <span class="skill-tag">≈ 4 дня</span>
+          </div>
+          <div class="module-desc">Чтение/запись файлов, обработка ошибок, менеджеры контекста.</div>
+          <div class="skill-arrow">
+            <span class="arrow-icon">→</span>
+            <span class="skill-text">Навык: Автоматизация обработки данных из файлов, устойчивый код</span>
+          </div>
+        </div>
+        <div class="module-row">
+          <div class="module-header">
+            <span class="module-name">Модуль 5. Парсинг и библиотеки Requests/BS4</span>
+            <span class="skill-tag">≈ 6 дней</span>
+          </div>
+          <div class="module-desc">HTTP-запросы, BeautifulSoup, сбор данных с сайтов.</div>
+          <div class="skill-arrow">
+            <span class="arrow-icon">→</span>
+            <span class="skill-text">Навык: Создание парсера новостей / товаров (портфолио)</span>
+          </div>
+        </div>
+        <div class="module-row">
+          <div class="module-header">
+            <span class="module-name">Модуль 6. Объектно-ориентированное программирование</span>
+            <span class="skill-tag">≈ 7 дней</span>
+          </div>
+          <div class="module-desc">Классы, объекты, наследование, инкапсуляция, магические методы.</div>
+          <div class="skill-arrow">
+            <span class="arrow-icon">→</span>
+            <span class="skill-text">Навык: Проектирование архитектуры приложений на ООП</span>
+          </div>
+        </div>
+        <div class="module-row">
+          <div class="module-header">
+            <span class="module-name">Модуль 7. Базы данных SQLite + API</span>
+            <span class="skill-tag">≈ 6 дней</span>
+          </div>
+          <div class="module-desc">SQL-запросы, интеграция с API, получение и сохранение данных.</div>
+          <div class="skill-arrow">
+            <span class="arrow-icon">→</span>
+            <span class="skill-text">Навык: Работа с реальными API и проектирование БД</span>
+          </div>
+        </div>
+        <!-- ВЫДЕЛЕННЫЙ МОДУЛЬ 8 с указанием времени -->
+        <div class="module-row highlight-final">
+          <div class="module-header">
+            <span class="module-name">Модуль 8. Финальный проект: Telegram-бот + парсер</span>
+            <span class="skill-tag">портфолио / ключевой результат ≈ 10-12 дней</span>
+          </div>
+          <div class="module-desc">Объединение модулей: бот анализирует цены, присылает отчёт, используется база данных.</div>
+          <div class="skill-arrow">
+            <span class="arrow-icon">→</span>
+            <span class="skill-text">Навык: Полноценный продукт для резюме, код-ревью от наставника</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- НОВЫЙ БЛОК: компетенции и карьерные позиции ВМЕСТО старого "Итоговый проект в портфолио" -->
+      <div class="competencies-block">
+        <h4>После полного прохождения курса вы сможете:</h4>
+        <ul class="competence-list">
+          <li>Создавать консольные приложения и парсеры</li>
+          <li>Работать с API и базами данных (SQLite)</li>
+          <li>Писать объектно-ориентированный код</li>
+          <li>Разрабатывать Telegram-ботов любой сложности</li>
+          <li>Автоматизировать сбор и обработку данных</li>
+          <li>Использовать Git для контроля версий</li>
+          <li>Разбираться в чужом коде и отлаживать ошибки</li>
+        </ul>
+        <div class="job-positions">
+          <p>На какие позиции вы сможете претендовать на рынке труда:</p>
+          <div>
+            <span>Junior Python Developer</span>
+            <span>Аналитик данных (Data Analyst)</span>
+            <span>Автоматизатор рутинных задач</span>
+            <span>Младший специалист по парсингу</span>
+            <span>Технический специалист поддержки (с уклоном в скрипты)</span>
+            <span>Фрилансер: боты / парсинг / автоматизация</span>
+          </div>
+          <p style="margin-top: 18px; font-size: 0.85rem; color: #aac3e0;">Выпускники курса успешно проходят собеседования на junior-позиции и стажировки с зарплатой от 50 000 — 90 000 ₽.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="reviews">
+    <div class="container">
+      <h2>Отзывы выпускников</h2>
+      <div class="reviews-grid">
+        <div class="review-card">
+          <div class="review-stars">★★★★★</div>
+          <div class="review-text">«Пришёл с нуля, до этого боялся даже слова "программирование". Вебинары в живую — топ, можно сразу спросить. Чат реально выручал. Сделал бота и парсер за месяц!»</div>
+          <div class="review-author">— Екатерина, менеджер → junior dev</div>
+        </div>
+        <div class="review-card">
+          <div class="review-stars">★★★★★</div>
+          <div class="review-text">«Главное — меня не бросили на полпути. Кураторы отвечали даже в 11 вечера. Рассрочка помогла, гарантия возврата — спокойствие. Рекомендую тем, кто боится сложностей»</div>
+          <div class="review-author">— Артём, студент</div>
+        </div>
+        <div class="review-card">
+          <div class="review-stars">★★★★★</div>
+          <div class="review-text">«Ожидал просто видеоуроков, а тут живые вебинары + домашки с проверкой. Проект добавил в резюме, через 2 месяца нашел стажировку»</div>
+          <div class="review-author">— Дмитрий, аналитик</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="bonus">
+    <div class="container">
+      <div class="form-box">
+        <h3 style="margin-bottom: 12px; color: var(--python-yellow);">Бесплатный вводный модуль</h3>
+        <p style="margin-bottom: 24px;">Узнайте ваш потенциал без вложений. 3 урока + задание + доступ в закрытый чат на 5 дней.</p>
+        <form id="mainBonusForm" action="#" method="POST">
+          <div class="form-group">
+            <input type="text" placeholder="Как к вам обращаться?" id="bonusName" required>
+          </div>
+          <div class="form-group">
+            <input type="email" placeholder="Ваш email" id="bonusEmail" required>
+          </div>
+          <button type="submit" class="btn btn-form">Получить бесплатный модуль</button>
+        </form>
+        <p class="small-note" style="margin-top: 20px;">Гарантия возврата 30 дней на основной курс. Рассрочка от банков-партнёров.</p>
+        <p style="margin-top: 12px; font-weight: 500;">Цена полного курса: <span style="color: var(--python-yellow); font-weight: 800; font-size: 1.4rem;">10 000 рублей</span> / рассрочка от 0%</p>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding: 30px 0; border-bottom: none;">
+    <div class="container">
+      <div class="guarantee-grid">
+        <div class="guarantee-item"><strong>30 дней</strong><br>гарантия возврата</div>
+        <div class="guarantee-item"><strong>Чат 24/7</strong><br>кураторы + сообщество</div>
+        <div class="guarantee-item"><strong>Сертификат</strong><br>после итогового проекта</div>
+        <div class="guarantee-item"><strong>Рассрочка</strong><br>без процентов</div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <p>PYTHON DEV — курс по программированию с живыми вебинарами. Все права защищены.</p>
+      <p style="margin-top: 8px;">support@pythondev-course.ru | ООО «ПитонДев»</p>
+    </div>
+  </footer>
+
+  <script>
+    function showMessage(msg, isSuccess = true) {
+      const toast = document.createElement('div');
+      toast.innerText = msg;
+      toast.style.position = 'fixed';
+      toast.style.bottom = '24px';
+      toast.style.left = '50%';
+      toast.style.transform = 'translateX(-50%)';
+      toast.style.backgroundColor = isSuccess ? '#4584b6' : '#b64545';
+      toast.style.color = 'white';
+      toast.style.padding = '12px 24px';
+      toast.style.borderRadius = '60px';
+      toast.style.fontWeight = '500';
+      toast.style.zIndex = '9999';
+      toast.style.boxShadow = '0 10px 20px rgba(0,0,0,0.3)';
+      toast.style.fontFamily = 'Inter, sans-serif';
+      document.body.appendChild(toast);
+      setTimeout(() => toast.remove(), 3500);
+    }
+
+    const freeForm = document.getElementById('freeModuleForm');
+    if (freeForm) {
+      freeForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const name = document.getElementById('name').value.trim();
+        const email = document.getElementById('email').value.trim();
+        if (!name || !email) {
+          showMessage('Пожалуйста, укажите имя и email', false);
+          return;
+        }
+        if (!email.includes('@')) {
+          showMessage('Введите корректный email', false);
+          return;
+        }
+        showMessage(`${name}, бесплатный модуль отправлен на ${email}! Проверьте почту.`, true);
+        freeForm.reset();
+      });
+    }
+
+    const bonusForm = document.getElementById('mainBonusForm');
+    if (bonusForm) {
+      bonusForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const name = document.getElementById('bonusName').value.trim();
+        const email = document.getElementById('bonusEmail').value.trim();
+        if (!name || !email) {
+          showMessage('Заполните имя и email', false);
+          return;
+        }
+        if (!email.includes('@')) {
+          showMessage('Укажите корректный email', false);
+          return;
+        }
+        showMessage(`Отлично, ${name}! Бесплатный модуль + доступ в чат высланы на ${email}.`, true);
+        bonusForm.reset();
+      });
+    }
+
+    document.querySelectorAll('.nav-links a').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        const targetId = this.getAttribute('href');
+        if (targetId && targetId !== '#') {
+          const targetElement = document.querySelector(targetId);
+          if (targetElement) {
+            e.preventDefault();
+            targetElement.scrollIntoView({ behavior: 'smooth' });
+          }
+        }
+      });
+    });
+  </script>
+</body>
+</html>

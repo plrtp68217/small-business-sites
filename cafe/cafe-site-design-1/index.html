@@ -13,7 +13,6 @@
     }
 
     body {
-      /* Только системные шрифты — без внешних загрузок */
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
       background-color: #FEF7F0;
       color: #2D2A24;
@@ -21,17 +20,10 @@
       line-height: 1.5;
     }
 
-    /* Единый стиль для всех заголовков — используем тот же системный стек, 
-       но с увеличенной насыщенностью и аккуратными пропорциями */
     h1, h2, h3, h4, .logo, .feature-card h3, .contact-info h3 {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
       font-weight: 600;
       letter-spacing: -0.01em;
-    }
-
-    /* Лёгкое отличие для акцента — более элегантный вес, но без смены гарнитуры */
-    .hero-badge, .menu-btn, .btn-primary, .btn-outline {
-      font-family: inherit;
     }
 
     .container {
@@ -40,7 +32,6 @@
       padding: 0 32px;
     }
 
-    /* унифицированные отступы секций — фиксированные, без слипания */
     .section {
       padding: 80px 0;
     }
@@ -51,7 +42,6 @@
       background-color: #FEF1E6;
     }
 
-    /* первый блок после хедера чуть уменьшим верхний отступ для ритма */
     .hero-section {
       padding: 48px 0 24px 0;
     }
@@ -98,9 +88,10 @@
       color: #5E2E1C;
       letter-spacing: -0.02em;
     }
-    .logo span {
+    .logo-accent {
       color: #C47B4B;
       font-size: 1.9rem;
+      font-weight: 700;
     }
     .nav-links {
       display: flex;
@@ -189,17 +180,34 @@
       background: #A85F34;
       transform: translateY(-2px);
     }
-    .hero-image {
+    /* Блок-описание вместо картинки в Hero */
+    .hero-image-placeholder {
       flex: 1;
       border-radius: 32px;
-      overflow: hidden;
+      background: linear-gradient(135deg, #EADBCE 0%, #DBC9B8 100%);
       box-shadow: 0 24px 40px -16px rgba(0,0,0,0.2);
-    }
-    .hero-image img {
-      width: 100%;
-      height: auto;
-      display: block;
+      padding: 40px 24px;
+      text-align: center;
       transition: 0.3s;
+      border: 1px solid #FFFFFF66;
+    }
+    .hero-placeholder-text {
+      font-size: 1.3rem;
+      font-weight: 500;
+      color: #4B3621;
+      background: rgba(255,245,235,0.85);
+      display: inline-block;
+      padding: 16px 28px;
+      border-radius: 60px;
+      margin-bottom: 16px;
+    }
+    .hero-placeholder-desc {
+      color: #3D2A1C;
+      font-size: 1rem;
+      background: rgba(255,255,245,0.7);
+      padding: 8px 20px;
+      border-radius: 40px;
+      display: inline-block;
     }
 
     /* FEATURES GRID */
@@ -224,24 +232,15 @@
     .feature-card:hover {
       transform: translateY(-4px);
       border-color: #E7CFBF;
-      box-shadow: 0 20px 30px -12px rgba(196,123,75,0.12);
     }
     .feature-icon {
-      font-size: 2.6rem;
+      font-size: 2.2rem;
+      font-weight: 500;
       margin-bottom: 20px;
-    }
-    .feature-card h3 {
-      font-size: 1.35rem;
-      margin-bottom: 12px;
-      font-weight: 600;
-    }
-    .feature-card p {
-      font-size: 0.9rem;
-      color: #5F4E40;
-      line-height: 1.45;
+      color: #C47B4B;
     }
 
-    /* MENU */
+    /* MENU — карточки товаров без эмодзи */
     .menu-categories {
       display: flex;
       justify-content: center;
@@ -267,73 +266,119 @@
     }
     .menu-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
-      gap: 28px;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 32px;
     }
-    .menu-item {
-      background: white;
-      border-radius: 24px;
-      padding: 20px;
+    .menu-item-card {
+      background: #FFFFFF;
+      border-radius: 28px;
+      overflow: hidden;
+      transition: all 0.25s ease;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.03);
+      border: 1px solid #F0E1D4;
       display: flex;
-      gap: 18px;
-      align-items: center;
-      box-shadow: 0 6px 14px rgba(0,0,0,0.02);
-      border: 1px solid #F3E4D8;
-      transition: 0.2s;
+      flex-direction: column;
     }
-    .menu-item:hover {
+    .menu-item-card:hover {
+      transform: translateY(-6px);
       border-color: #DDBFAB;
-      box-shadow: 0 12px 20px -12px rgba(0,0,0,0.08);
+      box-shadow: 0 20px 30px -12px rgba(128, 78, 43, 0.12);
     }
-    .menu-img {
-      width: 60px;
-      height: 60px;
-      background: #F8EDE4;
-      border-radius: 50%;
+    /* Блок-изображение: текстовое описание вместо картинки */
+    .menu-img-block {
+      background: linear-gradient(125deg, #F7EBE1 0%, #EFDBCE 100%);
+      padding: 32px 20px;
+      text-align: center;
+      border-bottom: 2px solid #E5D0BF;
+      min-height: 160px;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
-      font-size: 1.9rem;
     }
-    .menu-info h4 {
-      font-size: 1.1rem;
+    .menu-img-caption {
       font-weight: 700;
-      margin-bottom: 4px;
+      font-size: 1rem;
+      color: #5E3A24;
+      background: rgba(255,248,240,0.9);
+      display: inline-block;
+      padding: 6px 16px;
+      border-radius: 40px;
+      letter-spacing: 0.3px;
     }
-    .menu-info p {
-      font-size: 0.75rem;
-      color: #7F6B5C;
+    .menu-img-description {
+      font-size: 0.8rem;
+      color: #755E48;
+      margin-top: 12px;
+      font-style: italic;
     }
-    .price {
+    .menu-info-block {
+      padding: 20px 22px 24px;
+      background: white;
+    }
+    .menu-item-title {
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: #2F241E;
+      margin-bottom: 8px;
+      letter-spacing: -0.2px;
+    }
+    .menu-item-desc {
+      font-size: 0.9rem;
+      color: #6D5A4A;
+      line-height: 1.45;
+      margin-bottom: 18px;
+      border-left: 2px solid #E7CFBF;
+      padding-left: 12px;
+    }
+    .menu-item-price {
+      font-size: 1.35rem;
       font-weight: 700;
       color: #C47B4B;
-      margin-left: auto;
-      font-size: 1rem;
+      display: inline-block;
+      background: #FEF3EA;
+      padding: 6px 16px;
+      border-radius: 40px;
+      letter-spacing: -0.2px;
     }
 
-    /* GALLERY */
+    /* GALLERY — полностью текстовые описания без эмодзи */
     .gallery-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 24px;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 28px;
       margin-top: 32px;
     }
     .gallery-card {
-      border-radius: 24px;
+      border-radius: 28px;
+      background: #FFFFFF;
       overflow: hidden;
-      aspect-ratio: 1 / 0.9;
-      background: #EEDBCF;
       transition: 0.2s;
+      box-shadow: 0 8px 18px rgba(0,0,0,0.04);
+      border: 1px solid #F0DFD2;
     }
-    .gallery-card img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-      transition: 0.3s;
+    .gallery-visual {
+      background: radial-gradient(circle at 10% 30%, #EBD9CC, #DBC6B4);
+      padding: 48px 20px;
+      text-align: center;
+      border-bottom: 1px solid #E1CEBE;
     }
-    .gallery-card:hover img {
-      transform: scale(1.03);
+    .gallery-caption {
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: #3E2A1C;
+      background: rgba(255,250,240,0.85);
+      display: inline-block;
+      padding: 5px 18px;
+      border-radius: 60px;
+    }
+    .gallery-desc {
+      padding: 18px 16px;
+      background: white;
+      text-align: center;
+      font-size: 0.85rem;
+      color: #795F48;
+      font-weight: 500;
     }
 
     /* CONTACT + RESERVATION */
@@ -363,8 +408,10 @@
       font-size: 1rem;
     }
     .contact-detail span:first-child {
-      font-size: 1.5rem;
+      font-size: 1.3rem;
+      font-weight: 500;
       min-width: 36px;
+      color: #C47B4B;
     }
     .map-placeholder {
       flex: 1;
@@ -384,7 +431,6 @@
       padding: 12px 28px;
       border-radius: 60px;
       font-weight: 500;
-      font-size: 0.9rem;
     }
 
     /* FOOTER */
@@ -392,69 +438,28 @@
       background: #2D241F;
       color: #CFC3BB;
       padding: 52px 0 36px;
-      margin-top: 0;
-    }
-    .footer-content {
-      display: flex;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 24px;
-      margin-bottom: 28px;
-      font-size: 0.9rem;
     }
 
-    /* Адаптивность и дополнительные фиксы отступов */
     @media (max-width: 780px) {
-      .container {
-        padding: 0 20px;
-      }
-      .nav-bar {
-        flex-direction: column;
-        gap: 16px;
-      }
-      .hero-content h1 {
-        font-size: 2.2rem;
-      }
-      .section {
-        padding: 56px 0;
-      }
-      .hero-section {
-        padding: 24px 0 16px;
-      }
-      .hero-content p {
-        max-width: 100%;
-      }
-      .hero {
-        flex-direction: column;
-      }
-      h2 {
-        font-size: 1.7rem;
-      }
-      .contact-info {
-        padding: 28px 24px;
-      }
+      .container { padding: 0 20px; }
+      .nav-bar { flex-direction: column; gap: 16px; }
+      .hero-content h1 { font-size: 2.2rem; }
+      .section { padding: 56px 0; }
+      .hero-section { padding: 24px 0 16px; }
+      .hero-content p { max-width: 100%; }
+      .hero { flex-direction: column; }
+      h2 { font-size: 1.7rem; }
     }
-
     @media (max-width: 480px) {
-      .menu-item {
-        flex-wrap: wrap;
-      }
-      .price {
-        margin-left: 0;
-        width: 100%;
-        text-align: right;
-      }
+      .menu-grid { grid-template-columns: 1fr; }
     }
-
-    button, .btn-outline, .btn-primary {
-      font-family: inherit;
-    }
+    button, .btn-outline, .btn-primary { font-family: inherit; }
   </style>
 </head>
 <body>
 <header>
   <div class="container nav-bar">
-    <div class="logo">Аромантика<span>☕</span></div>
+    <div class="logo">Аромантика<span class="logo-accent"> | кофе с душой</span></div>
     <ul class="nav-links">
       <li><a href="#about">О нас</a></li>
       <li><a href="#menu">Меню</a></li>
@@ -466,37 +471,39 @@
 </header>
 
 <main>
-  <!-- Hero секция с отдельным классом для аккуратного отступа -->
+  <!-- Hero секция -->
   <div class="hero-section">
     <div class="container">
       <div class="hero">
         <div class="hero-content">
-          <div class="hero-badge">✨ Лучшая кофейня района ✨</div>
+          <div class="hero-badge">★ Лучшая кофейня района ★</div>
           <h1>Кофе, который <br> согревает душу</h1>
           <p>Уютная атмосфера, свежая выпечка и кофе из обжарки премиум-класса. Идеальное место для встреч и вдохновения.</p>
           <a href="#menu" class="btn-primary">Смотреть меню →</a>
         </div>
-        <div class="hero-image">
-          <img src="https://i.pinimg.com/736x/14/af/cb/14afcba0eaaaa771442eb911c6b4e888.jpg" alt="Атмосфера кофейни">
+        <div class="hero-image-placeholder">
+          <div class="hero-placeholder-text">Атмосфера уюта</div>
+          <div class="hero-placeholder-desc">Мягкий свет, аромат свежесваренного кофе и тепло деревянных интерьеров</div>
+          <div style="margin-top: 20px; font-size: 0.85rem; color:#6F4E36;">место вдохновения</div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- О нас + преимущества (фиксированный отступ) -->
+  <!-- О нас + преимущества -->
   <div class="section-warm section" id="about">
     <div class="container">
       <h2>Почему выбирают нас</h2>
       <div class="features-grid">
-        <div class="feature-card"><div class="feature-icon">☕</div><h3>100% Арабика</h3><p>Зерна от лучших фермеров Эфиопии и Коста-Рики, обжарка в день заказа.</p></div>
-        <div class="feature-card"><div class="feature-icon">🥐</div><h3>Домашняя выпечка</h3><p>Круассаны, синабоны и десерты от нашего шеф-кондитера каждое утро.</p></div>
-        <div class="feature-card"><div class="feature-icon">📖</div><h3>Work-friendly</h3><p>Wi-Fi, розетки и тихая музыка — работай с удовольствием.</p></div>
-        <div class="feature-card"><div class="feature-icon">🎵</div><h3>Живые вечера</h3><p>По пятницам джаз и акустические концерты.</p></div>
+        <div class="feature-card"><div class="feature-icon">Кофе</div><h3>100% Арабика</h3><p>Зерна от лучших фермеров Эфиопии и Коста-Рики, обжарка в день заказа.</p></div>
+        <div class="feature-card"><div class="feature-icon">Выпечка</div><h3>Домашняя выпечка</h3><p>Круассаны, синабоны и десерты от нашего шеф-кондитера каждое утро.</p></div>
+        <div class="feature-card"><div class="feature-icon">Работа</div><h3>Work-friendly</h3><p>Wi-Fi, розетки и тихая музыка — работай с удовольствием.</p></div>
+        <div class="feature-card"><div class="feature-icon">Музыка</div><h3>Живые вечера</h3><p>По пятницам джаз и акустические концерты.</p></div>
       </div>
     </div>
   </div>
 
-  <!-- Меню -->
+  <!-- Меню с обновлёнными карточками без эмодзи -->
   <div class="section-light section" id="menu">
     <div class="container">
       <h2>Наше меню</h2>
@@ -505,21 +512,31 @@
         <button data-cat="dessert" class="menu-btn">Десерты</button>
         <button data-cat="breakfast" class="menu-btn">Завтраки</button>
       </div>
-      <div class="menu-grid" id="menuGrid">
-        <!-- динамическая загрузка -->
-      </div>
+      <div class="menu-grid" id="menuGrid"></div>
     </div>
   </div>
 
-  <!-- Галерея -->
+  <!-- Галерея: изящные текстовые блоки -->
   <div class="section-warm section" id="gallery">
     <div class="container">
       <h2>Атмосфера в деталях</h2>
       <div class="gallery-grid">
-        <div class="gallery-card"><img src="https://i.pinimg.com/1200x/c0/f7/75/c0f775e083976500e1ea18355448e2e9.jpg" alt="Барная стойка"></div>
-        <div class="gallery-card"><img src="https://i.pinimg.com/736x/2b/4c/f7/2b4cf7f7a4ad1ff796db6c96b2466830.jpg" alt="Мягкие кресла"></div>
-        <div class="gallery-card"><img src="https://i.pinimg.com/736x/21/74/32/2174329b8ef1603c1cbc68bd9ef5865a.jpg" alt="Латте арт"></div>
-        <div class="gallery-card"><img src="https://i.pinimg.com/1200x/77/5e/53/775e531178a1d7b1c646f363e1679c2d.jpg" alt="Десерты и выпечка"></div>
+        <div class="gallery-card">
+          <div class="gallery-visual"><div class="gallery-caption">Барная стойка</div></div>
+          <div class="gallery-desc">Древесные оттенки, витрина с десертами, душевные разговоры с бариста</div>
+        </div>
+        <div class="gallery-card">
+          <div class="gallery-visual"><div class="gallery-caption">Мягкие кресла</div></div>
+          <div class="gallery-desc">Уголок для чтения: велюровые кресла, приглушённый свет и пледы</div>
+        </div>
+        <div class="gallery-card">
+          <div class="gallery-visual"><div class="gallery-caption">Латте арт</div></div>
+          <div class="gallery-desc">Рисунки на пенке: от сердечек до сказочных зверей — произведение искусства</div>
+        </div>
+        <div class="gallery-card">
+          <div class="gallery-visual"><div class="gallery-caption">Десерты и выпечка</div></div>
+          <div class="gallery-desc">Свежайшие круассаны, чизкейки и тарталетки, которые тают во рту</div>
+        </div>
       </div>
     </div>
   </div>
@@ -539,7 +556,7 @@
         </div>
         <div class="map-placeholder">
           <p>🗺️ Мы находимся в сердце города, рядом с метро Арбатская</p>
-          <div style="margin-top: 20px; font-size: 0.85rem;">🚶‍♀️ 2 минуты от станции</div>
+          <div style="margin-top: 20px; font-size: 0.85rem;">2 минуты от станции</div>
         </div>
       </div>
     </div>
@@ -557,28 +574,28 @@
 </footer>
 
 <script>
-  // Меню — все данные без внешних зависимостей
+  // Меню полностью без эмодзи (только текст, описательные блоки)
   const menuData = {
     coffee: [
-      { name: "Эспрессо", desc: "Классический, насыщенный", price: "180 ₽", emoji: "☕" },
-      { name: "Капучино", desc: "Нежная пенка, итальянский стиль", price: "250 ₽", emoji: "🥛" },
-      { name: "Латте", desc: "Мягкий вкус с нотками карамели", price: "280 ₽", emoji: "🍮" },
-      { name: "Раф", desc: "Ванильный раф с сиропом", price: "310 ₽", emoji: "🍯" },
-      { name: "Фильтр-кофе", desc: "Пуровер от шефа", price: "220 ₽", emoji: "💧" }
+      { name: "Эспрессо", desc: "Насыщенный, с плотной пенкой и долгим послевкусием.", price: "180 ₽", imgCaption: "Классический итальянский ристретто", imgExtra: "Насыщенная крема, бодрит с первого глотка" },
+      { name: "Капучино", desc: "Нежная молочная пенка, сбалансированный вкус с оттенками орехов.", price: "250 ₽", imgCaption: "Идеальный баланс эспрессо и молока", imgExtra: "Украшен тонкой пенкой с корицей" },
+      { name: "Латте", desc: "Шелковистый, с мягкими карамельными нотами и лёгкой сладостью.", price: "280 ₽", imgCaption: "Слои кофе и вспененного молока", imgExtra: "Нежный латте-арт на поверхности" },
+      { name: "Раф", desc: "Ванильный раф с густой текстурой, десертный вкус.", price: "310 ₽", imgCaption: "Сливочный кофейный коктейль", imgExtra: "Секретный ванильный сироп" },
+      { name: "Фильтр-кофе", desc: "Пуровер из эфиопских зерен, цветочные и ягодные нюансы.", price: "220 ₽", imgCaption: "Медленное капельное заваривание", imgExtra: "Прозрачный, богатый аромат" }
     ],
     dessert: [
-      { name: "Чизкейк", desc: "Нью-Йорк с ягодным соусом", price: "320 ₽", emoji: "🍰" },
-      { name: "Круассан", desc: "Масляный, с миндалем или шоколадом", price: "190 ₽", emoji: "🥐" },
-      { name: "Медовик", desc: "Нежный, домашний рецепт", price: "270 ₽", emoji: "🍯" },
-      { name: "Маффин", desc: "Черника или шоколад", price: "150 ₽", emoji: "🧁" },
-      { name: "Синнабон", desc: "Корица и сливочный сыр", price: "240 ₽", emoji: "🍥" }
+      { name: "Чизкейк", desc: "Нежный нью-йорк с ягодным кули и хрустящей основой.", price: "320 ₽", imgCaption: "Творожная классика", imgExtra: "С кислинкой малинового топпинга" },
+      { name: "Круассан", desc: "Масляный, слоистый, с миндальной начинкой или шоколадом.", price: "190 ₽", imgCaption: "Французская выпечка", imgExtra: "Хрустящая корочка, нежный центр" },
+      { name: "Медовик", desc: "Домашний рецепт, пропитанный сметанным кремом с мёдом.", price: "270 ₽", imgCaption: "Медовые коржи", imgExtra: "Традиционный вкус из детства" },
+      { name: "Маффин", desc: "С черникой или шоколадной крошкой, влажный внутри.", price: "150 ₽", imgCaption: "Американский кекс", imgExtra: "Подаётся тёплым" },
+      { name: "Синнабон", desc: "Корица, сливочный сыр, карамельная глазурь.", price: "240 ₽", imgCaption: "Улитка с корицей", imgExtra: "Глазурь тает во рту" }
     ],
     breakfast: [
-      { name: "Овсянка", desc: "С ягодами, бананом и медом", price: "290 ₽", emoji: "🥣" },
-      { name: "Сэндвич с курицей", desc: "Цельнозерновой хлеб, авокадо", price: "370 ₽", emoji: "🥪" },
-      { name: "Сырники", desc: "Со сметаной и вареньем", price: "320 ₽", emoji: "🥞" },
-      { name: "Яичница с беконом", desc: "Хрустящий бекон, помидоры", price: "340 ₽", emoji: "🍳" },
-      { name: "Гранола", desc: "Домашняя с йогуртом", price: "280 ₽", emoji: "🥄" }
+      { name: "Овсянка", desc: "С ягодами, бананом, семенами чиа и мёдом.", price: "290 ₽", imgCaption: "Полезный завтрак", imgExtra: "Богата клетчаткой" },
+      { name: "Сэндвич с курицей", desc: "Цельнозерновой хлеб, куриное филе, авокадо, рукола.", price: "370 ₽", imgCaption: "Сытный и свежий", imgExtra: "Домашний соус песто" },
+      { name: "Сырники", desc: "Из творога, со сметаной и ягодным вареньем.", price: "320 ₽", imgCaption: "Нежные творожные", imgExtra: "Посыпаны сахарной пудрой" },
+      { name: "Яичница с беконом", desc: "Хрустящий бекон, помидоры черри, поджаренный тост.", price: "340 ₽", imgCaption: "Классический бранч", imgExtra: "С яйцом пашот" },
+      { name: "Гранола", desc: "Домашняя гранола с греческим йогуртом и свежими ягодами.", price: "280 ₽", imgCaption: "Хрустящий микс", imgExtra: "Мёд и кокосовая стружка" }
     ]
   };
 
@@ -590,27 +607,27 @@
     if (!grid) return;
     grid.innerHTML = "";
     items.forEach(item => {
-      const menuItemDiv = document.createElement("div");
-      menuItemDiv.className = "menu-item";
-      menuItemDiv.innerHTML = `
-        <div class="menu-img">${item.emoji}</div>
-        <div class="menu-info">
-          <h4>${item.name}</h4>
-          <p>${item.desc}</p>
+      const card = document.createElement("div");
+      card.className = "menu-item-card";
+      card.innerHTML = `
+        <div class="menu-img-block">
+          <div class="menu-img-caption">${item.imgCaption}</div>
+          <div class="menu-img-description">${item.imgExtra || 'фирменный рецепт'}</div>
         </div>
-        <div class="price">${item.price}</div>
+        <div class="menu-info-block">
+          <div class="menu-item-title">${item.name}</div>
+          <div class="menu-item-desc">${item.desc}</div>
+          <div class="menu-item-price">${item.price}</div>
+        </div>
       `;
-      grid.appendChild(menuItemDiv);
+      grid.appendChild(card);
     });
   }
 
   function setActiveCategory(cat) {
     document.querySelectorAll(".menu-btn").forEach(btn => {
-      if (btn.dataset.cat === cat) {
-        btn.classList.add("active");
-      } else {
-        btn.classList.remove("active");
-      }
+      if (btn.dataset.cat === cat) btn.classList.add("active");
+      else btn.classList.remove("active");
     });
     currentCategory = cat;
     renderMenu(cat);
@@ -625,11 +642,11 @@
 
   renderMenu("coffee");
 
-  // Бронирование (демо)
+  // Бронирование (без эмодзи в тексте)
   function showReservationAlert() {
     const userConfirm = confirm("Хотите забронировать столик в «Аромантике»? Наш менеджер свяжется с вами.");
     if(userConfirm) {
-      alert("Спасибо! Мы перезвоним вам в ближайшее время ☎️\n+7 (495) 123-45-67");
+      alert("Спасибо! Мы перезвоним вам в ближайшее время. Телефон: +7 (495) 123-45-67");
     }
   }
 
@@ -638,7 +655,7 @@
   if(reserveBtn) reserveBtn.addEventListener("click", showReservationAlert);
   if(reserveFooterBtn) reserveFooterBtn.addEventListener("click", showReservationAlert);
 
-  // Плавный скролл для навигации
+  // Плавный скролл
   document.querySelectorAll('.nav-links a, .btn-primary[href="#menu"]').forEach(anchor => {
     anchor.addEventListener('click', function(e) {
       const href = this.getAttribute('href');
